@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SimulatedExchange.DataAccess.Databases;
 using SimulatedExchange.Domain;
 using SimulatedExchange.Events;
+using SimulatedExchange.Exceptions;
 using SimulatedExchange.Storages;
 using System;
 using System.Collections.Generic;
@@ -26,12 +27,12 @@ namespace SimulatedExchange.DataAccess.Storages
             this.mementoStorage = mementoStorage;
         }
 
-        public async Task<IEnumerable<Event>> GetEvents(Guid aggregateId)
+        public async Task<IEnumerable<Event>> GetEventsAsync(Guid aggregateId)
         {
             const string SELECT_SQL = "SELECT * FROM events_storage WHERE AggregateId = @aggregateId ORDER BY Version ASC";
 
             var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_CONNECTION);
-            var datas = await connection.QueryAsync<DTO>(SELECT_SQL, new { aggregateId = aggregateId.ToString() });
+            var datas = await connection.QueryAsync<PersistentObject>(SELECT_SQL, new { aggregateId = aggregateId.ToString() });
 
             var result = datas.Select(data =>
              {
@@ -41,10 +42,15 @@ namespace SimulatedExchange.DataAccess.Storages
                  return (Event)@event;
              });
 
+            if (!result.Any())
+            {
+                throw new AggregateNotFoundException($"找不到聚合根：\"{aggregateId}\"");
+            }
+
             return result;
         }
 
-        public async Task SaveEvents<TAggregateRoot>(TAggregateRoot aggregateRoot) where TAggregateRoot : AggregateRoot
+        public async Task SaveEventsAsync<TAggregateRoot>(TAggregateRoot aggregateRoot) where TAggregateRoot : AggregateRoot
         {
             var events = aggregateRoot.UncommittedEvent;
             var version = aggregateRoot.Version;
@@ -64,7 +70,7 @@ namespace SimulatedExchange.DataAccess.Storages
                         {
                             var memento = aggregateRoot.GetMemento();
                             memento.Version = version;
-                            await mementoStorage.SaveMemento(memento);
+                            await mementoStorage.SaveMementoAsync(memento);
                         }
 
                         var json = JsonConvert.SerializeObject(@event);

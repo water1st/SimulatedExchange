@@ -5,7 +5,7 @@ namespace SimulatedExchange.Domain
 {
     public interface IEventProvider
     {
-        void LoadsFromHistory(IEnumerable<Event> history);
+        void RestoreEvents(IEnumerable<Event> history);
         IEnumerable<Event> UncommittedEvent { get; }
     }
 }

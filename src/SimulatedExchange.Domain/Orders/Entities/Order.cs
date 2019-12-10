@@ -1,4 +1,5 @@
-﻿using SimulatedExchange.Domain.Orders.Events;
+﻿using SimulatedExchange.Domain.Orders.DTO;
+using SimulatedExchange.Domain.Orders.Events;
 using SimulatedExchange.Events;
 using System;
 
@@ -11,7 +12,7 @@ namespace SimulatedExchange.Domain.Orders.Entities
     {
         //币对
         public PairSymbols PairSymbols { get; private set; }
-        //委托价格
+        //委托价格 
         public decimal Price { get; private set; }
         //成交量
         public decimal Volume { get; private set; }
@@ -24,9 +25,9 @@ namespace SimulatedExchange.Domain.Orders.Entities
         //订单状态
         public OrderStatus Status { get; private set; }
 
-        public void PlaceOrder()
+        public void PlaceOrder(OrderInfo orderInfo)
         {
-            var @event = new NewOrder();
+            var @event = new NewOrder(orderInfo.Symbols, orderInfo.Price, orderInfo.Amount, orderInfo.Exchange);
             ApplyEvent(@event);
         }
 
@@ -36,14 +37,9 @@ namespace SimulatedExchange.Domain.Orders.Entities
             ApplyEvent(@event);
         }
 
-        public void Deal(decimal price, decimal amount)
+        public void Deal(TransactionInfo info)
         {
-            var @event = new OrderTransaction
-            {
-                Price = price,
-                Amount = amount
-            };
-
+            var @event = new OrderTransaction(info.Price, info.Amount);
             ApplyEvent(@event);
         }
 
@@ -79,17 +75,37 @@ namespace SimulatedExchange.Domain.Orders.Entities
 
         public void Handle(NewOrder @event)
         {
-            throw new NotImplementedException();
+            Exchange = @event.Exchange;
+            TotalAmount = @event.Amount;
+            Exchange = @event.Exchange;
+            Price = @event.Price;
+            PairSymbols = @event.Symbols;
+            Type = OrderType.Limit;
+            Status = OrderStatus.Opened;
         }
 
         public void Handle(CancelOrder @event)
         {
-            throw new NotImplementedException();
+            Status = OrderStatus.Canceled;
         }
 
         public void Handle(OrderTransaction @event)
         {
+            var volume = @event.Amount + Volume;
+            if (volume > TotalAmount)
+            {
+                throw new ArgumentOutOfRangeException("成交量大于委托量");
+            }
+            else if (volume == TotalAmount)
+            {
+                Status = OrderStatus.FullTransaction;
+            }
+            else
+            {
+                Status = OrderStatus.PartialTransaction;
+            }
 
+            Price = @event.Price;
         }
 
     }

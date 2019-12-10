@@ -20,12 +20,12 @@ namespace SimulatedExchange.DataAccess.Storages
             this.logger = logger;
         }
 
-        public async Task<BaseMemento> GetMemento(Guid aggregateId)
+        public async Task<BaseMemento> GetMementoAsync(Guid aggregateId)
         {
             const string SELECT_SQL = "SELECT * FROM memento_storage WHERE Version = (SELECT MAX(Version) FROM memento_storage WHERE AggregateId=@aggregateId)";
             var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_CONNECTION);
 
-            var data = await connection.QueryFirstOrDefaultAsync<DTO>(SELECT_SQL, new { aggregateId = aggregateId.ToString() });
+            var data = await connection.QueryFirstOrDefaultAsync<PersistentObject>(SELECT_SQL, new { aggregateId = aggregateId.ToString() });
 
             if (data == null)
                 return null;
@@ -36,7 +36,7 @@ namespace SimulatedExchange.DataAccess.Storages
             return (BaseMemento)result;
         }
 
-        public async Task SaveMemento(BaseMemento memento)
+        public async Task SaveMementoAsync(BaseMemento memento)
         {
             const string INSERT_SQL = "INSERT INTO memento_storage (Id,AggregateId,Memento,MementoType,Version) VALUES (@id,@aggregateId,@memento,@mementoType,@version)";
 

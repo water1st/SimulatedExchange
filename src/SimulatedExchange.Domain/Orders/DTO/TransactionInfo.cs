@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SimulatedExchange.Domain.Orders.DTO
+﻿namespace SimulatedExchange.Domain.Orders.DTO
 {
     public class TransactionInfo
     {
+        public decimal Price { get; set; }
+        public decimal Amount { get; set; }
     }
 }

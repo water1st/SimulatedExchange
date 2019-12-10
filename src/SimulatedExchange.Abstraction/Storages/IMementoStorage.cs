@@ -6,7 +6,7 @@ namespace SimulatedExchange.Storages
 {
     public interface IMementoStorage
     {
-        Task<BaseMemento> GetMemento(Guid aggregateId);
-        Task SaveMemento(BaseMemento memento);
+        Task<BaseMemento> GetMementoAsync(Guid aggregateId);
+        Task SaveMementoAsync(BaseMemento memento);
     }
 }

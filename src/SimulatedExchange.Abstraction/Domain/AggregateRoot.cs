@@ -1,5 +1,5 @@
 ﻿using SimulatedExchange.Events;
-using SimulatedExchange.Utilities;
+using SimulatedExchange.Infrastructure;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace SimulatedExchange.Domain
             }
         }
 
-        public void LoadsFromHistory(IEnumerable<Event> history)
+        public void RestoreEvents(IEnumerable<Event> history)
         {
             foreach (var @event in history)
             {

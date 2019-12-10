@@ -2,7 +2,7 @@
 {
     public partial class MySQLEventStorage
     {
-        private class DTO
+        private class PersistentObject
         {
             public string Id { get; set; }
             public string AggregateId { get; set; }

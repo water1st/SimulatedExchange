@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimulatedExchange.Utilities
+namespace SimulatedExchange.Infrastructure
 {
     public static class Converter
     {

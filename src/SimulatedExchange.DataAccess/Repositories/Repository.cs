@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using NeoSmart.AsyncLock;
 using SimulatedExchange.Domain;
+using SimulatedExchange.Exceptions;
 using SimulatedExchange.Storages;
 using System;
 using System.Linq;
@@ -14,18 +15,16 @@ namespace SimulatedExchange.DataAccess.Repositories
         private readonly AsyncLock @lock = new AsyncLock();
         private readonly IEventStorage eventStorage;
         private readonly IMementoStorage mementoStorage;
-        private readonly ILogger logger;
 
-        public Repository(IEventStorage eventStorage, IMementoStorage mementoStorage, ILogger<Repository<TAggregateRoot>> logger)
+        public Repository(IEventStorage eventStorage, IMementoStorage mementoStorage)
         {
             this.eventStorage = eventStorage;
             this.mementoStorage = mementoStorage;
-            this.logger = logger;
         }
-        public virtual async Task<TAggregateRoot> GetById(Guid id)
+        public virtual async Task<TAggregateRoot> GetByIdAsync(Guid id)
         {
-            var memento = await mementoStorage.GetMemento(id);
-            var events = await eventStorage.GetEvents(id);
+            var memento = await mementoStorage.GetMementoAsync(id);
+            var events = await eventStorage.GetEventsAsync(id);
 
             var aggregateRoot = new TAggregateRoot();
             if (memento != null)
@@ -34,12 +33,12 @@ namespace SimulatedExchange.DataAccess.Repositories
                 aggregateRoot.SetMemento(memento);
             }
 
-            aggregateRoot.LoadsFromHistory(events);
+            aggregateRoot.RestoreEvents(events);
 
             return aggregateRoot;
         }
 
-        public virtual async Task Save(TAggregateRoot aggregateRoot)
+        public virtual async Task SaveAsync(TAggregateRoot aggregateRoot)
         {
             if (aggregateRoot.UncommittedEvent.Any())
             {
@@ -47,16 +46,14 @@ namespace SimulatedExchange.DataAccess.Repositories
                 {
                     if (aggregateRoot.Version != -1)
                     {
-                        var item = await GetById(aggregateRoot.Id);
+                        var item = await GetByIdAsync(aggregateRoot.Id);
                         if (item.Version != aggregateRoot.Version)
                         {
-                            var ex = new Exception("聚合根已被其他线程修改");
-                            logger.LogWarning(ex, ex.Message);
-                            throw ex;
+                            throw new ConcurrencyException($"聚合根 \"{aggregateRoot.Id}\" 已被修改");
                         }
                     }
 
-                    await eventStorage.SaveEvents(aggregateRoot);
+                    await eventStorage.SaveEventsAsync(aggregateRoot);
                 }
             }
         }

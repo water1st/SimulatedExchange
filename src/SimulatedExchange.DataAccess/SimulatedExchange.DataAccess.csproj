@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimulatedExchange.Abstraction\SimulatedExchange.Abstraction.csproj" />
-    <ProjectReference Include="..\SimulatedExchange.Domain\SimulatedExchange.Domain.csproj" />
   </ItemGroup>
 
 </Project>

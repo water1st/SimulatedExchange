@@ -7,22 +7,22 @@ namespace SimulatedExchange.Domain.Orders.Service
 {
     public class OrderService : IOrderService
     {
-        public Task CancelOrder(Guid id)
+        public Task CancelOrderAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<OrderInfo>> GetOrderList()
+        public Task<IEnumerable<OrderInfo>> GetOrderListAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task PlaceOrder(OrderInfo orderInfo)
+        public Task PlaceOrderAsync(OrderInfo orderInfo)
         {
             throw new NotImplementedException();
         }
 
-        public Task Transaction(TransactionInfo info)
+        public Task TransactionAsync(TransactionInfo info)
         {
             throw new NotImplementedException();
         }
