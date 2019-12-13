@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimulatedExchange.Domain.Orders.Entities
+namespace SimulatedExchange.Domain.Orders
 {
     public struct PairSymbols : IEquatable<PairSymbols>
     {
@@ -54,5 +54,10 @@ namespace SimulatedExchange.Domain.Orders.Entities
         public static bool operator ==(PairSymbols left, PairSymbols right) => left.Equals(right);
 
         public static bool operator !=(PairSymbols left, PairSymbols right) => !left.Equals(right);
+
+        public override string ToString()
+        {
+            return $"{To}-{From}";
+        }
     }
 }

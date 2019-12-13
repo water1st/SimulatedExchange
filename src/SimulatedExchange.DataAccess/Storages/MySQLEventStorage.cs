@@ -31,7 +31,7 @@ namespace SimulatedExchange.DataAccess.Storages
         {
             const string SELECT_SQL = "SELECT * FROM events_storage WHERE AggregateId = @aggregateId ORDER BY Version ASC";
 
-            var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_CONNECTION);
+            var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB);
             var datas = await connection.QueryAsync<PersistentObject>(SELECT_SQL, new { aggregateId = aggregateId.ToString() });
 
             var result = datas.Select(data =>
@@ -56,7 +56,7 @@ namespace SimulatedExchange.DataAccess.Storages
             var version = aggregateRoot.Version;
 
             const string INSERT_SQL = "INSERT INTO events_storage (Id,AggregateId,Event,EventType,Version) VALUES (@id,@aggregateId,@event,@eventType,@version)";
-            var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_CONNECTION);
+            var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB);
 
             using (var transaction = connection.BeginTransaction())
             {

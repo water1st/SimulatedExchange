@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -15,6 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimulatedExchange.Abstraction\SimulatedExchange.Abstraction.csproj" />
+    <ProjectReference Include="..\SimulatedExchange.Domain\SimulatedExchange.Domain.csproj" />
+    <ProjectReference Include="..\SimulatedExchange.Queries\SimulatedExchange.Queries.csproj" />
   </ItemGroup>
 
 </Project>

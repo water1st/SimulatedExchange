@@ -1,30 +1,60 @@
-﻿using SimulatedExchange.Domain.Orders.DTO;
+﻿using SimulatedExchange.Bus;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Domain.Orders.Service
 {
     public class OrderService : IOrderService
     {
-        public Task CancelOrderAsync(Guid id)
+        private readonly IRepository<Order> repository;
+        private readonly IEventBus bus;
+
+        public OrderService(IRepository<Order> repository, IEventBus bus)
         {
-            throw new NotImplementedException();
+            this.repository = repository;
+            this.bus = bus;
         }
 
-        public Task<IEnumerable<OrderInfo>> GetOrderListAsync()
+        public async Task CancelOrderAsync(Guid id)
         {
-            throw new NotImplementedException();
+            //获取聚合根
+            var order = await repository.GetByIdAsync(id);
+            //取消订单
+            order.Cancel();
+            //持久化事件
+            await repository.SaveAsync(order);
+            //推送未发送事件
+            await bus.PublishAsync(order.UncommittedEvent);
+            //标记事件已发送
+            order.MarkEventCommited();
         }
 
-        public Task PlaceOrderAsync(OrderInfo orderInfo)
+        public async Task PlaceOrderAsync(OrderInfo orderInfo)
         {
-            throw new NotImplementedException();
+            //创建聚合根
+            var order = new Order();
+            //下单
+            order.PlaceOrder(orderInfo);
+            //持久化事件
+            await repository.SaveAsync(order);
+            //推送事件
+            await bus.PublishAsync(order.UncommittedEvent);
+            //标记事件已发送
+            order.MarkEventCommited();
         }
 
-        public Task TransactionAsync(TransactionInfo info)
+        public async Task TransactionAsync(Guid Id, TransactionInfo info)
         {
-            throw new NotImplementedException();
+            //获取聚合根
+            var order = await repository.GetByIdAsync(Id);
+            //交易
+            order.Deal(info);
+            //持久化事件
+            await repository.SaveAsync(order);
+            //推送事件
+            await bus.PublishAsync(order.UncommittedEvent);
+            //标记事件已发送
+            order.MarkEventCommited();
         }
     }
 }

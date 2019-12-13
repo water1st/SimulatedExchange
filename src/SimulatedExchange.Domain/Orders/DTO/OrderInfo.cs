@@ -1,6 +1,4 @@
-﻿using SimulatedExchange.Domain.Orders.Entities;
-
-namespace SimulatedExchange.Domain.Orders.DTO
+﻿namespace SimulatedExchange.Domain.Orders
 {
     public class OrderInfo
     {

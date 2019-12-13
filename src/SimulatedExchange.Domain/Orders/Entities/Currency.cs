@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimulatedExchange.Domain.Orders.Entities
+namespace SimulatedExchange.Domain.Orders
 {
     public struct Currency : IEquatable<Currency>
     {

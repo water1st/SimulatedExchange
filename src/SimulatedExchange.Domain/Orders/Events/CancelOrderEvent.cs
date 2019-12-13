@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimulatedExchange.Domain.Orders.Events
+namespace SimulatedExchange.Domain.Orders
 {
-    public class CancelOrder : Event
+    public class CancelOrderEvent : Event
     {
     }
 }

@@ -1,14 +1,12 @@
-﻿using SimulatedExchange.Domain.Orders.DTO;
-using SimulatedExchange.Domain.Orders.Events;
-using SimulatedExchange.Events;
+﻿using SimulatedExchange.Events;
 using System;
 
-namespace SimulatedExchange.Domain.Orders.Entities
+namespace SimulatedExchange.Domain.Orders
 {
     public class Order : AggregateRoot,
-        IAggregateRootEventHandler<NewOrder>,
-        IAggregateRootEventHandler<CancelOrder>,
-        IAggregateRootEventHandler<OrderTransaction>
+        IAggregateRootEventHandler<NewOrderEvent>,
+        IAggregateRootEventHandler<CancelOrderEvent>,
+        IAggregateRootEventHandler<OrderTransactionEvent>
     {
         //币对
         public PairSymbols PairSymbols { get; private set; }
@@ -27,19 +25,19 @@ namespace SimulatedExchange.Domain.Orders.Entities
 
         public void PlaceOrder(OrderInfo orderInfo)
         {
-            var @event = new NewOrder(orderInfo.Symbols, orderInfo.Price, orderInfo.Amount, orderInfo.Exchange);
+            var @event = new NewOrderEvent(orderInfo.Symbols, orderInfo.Price, orderInfo.Amount, orderInfo.Exchange, OrderType.Limit);
             ApplyEvent(@event);
         }
 
         public void Cancel()
         {
-            var @event = new CancelOrder();
+            var @event = new CancelOrderEvent();
             ApplyEvent(@event);
         }
 
         public void Deal(TransactionInfo info)
         {
-            var @event = new OrderTransaction(info.Price, info.Amount);
+            var @event = new OrderTransactionEvent(info.Price, info.Amount);
             ApplyEvent(@event);
         }
 
@@ -73,23 +71,23 @@ namespace SimulatedExchange.Domain.Orders.Entities
             Version = orderMemento.Version;
         }
 
-        public void Handle(NewOrder @event)
+        public void Handle(NewOrderEvent @event)
         {
             Exchange = @event.Exchange;
             TotalAmount = @event.Amount;
             Exchange = @event.Exchange;
             Price = @event.Price;
             PairSymbols = @event.Symbols;
-            Type = OrderType.Limit;
+            Type = @event.Type;
             Status = OrderStatus.Opened;
         }
 
-        public void Handle(CancelOrder @event)
+        public void Handle(CancelOrderEvent @event)
         {
             Status = OrderStatus.Canceled;
         }
 
-        public void Handle(OrderTransaction @event)
+        public void Handle(OrderTransactionEvent @event)
         {
             var volume = @event.Amount + Volume;
             if (volume > TotalAmount)
@@ -104,7 +102,7 @@ namespace SimulatedExchange.Domain.Orders.Entities
             {
                 Status = OrderStatus.PartialTransaction;
             }
-
+            @event.OrderStatus = Status;
             Price = @event.Price;
         }
 

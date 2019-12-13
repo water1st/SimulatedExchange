@@ -1,5 +1,4 @@
-﻿using SimulatedExchange.Domain.Orders.DTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,8 +11,6 @@ namespace SimulatedExchange.Domain.Orders.Service
         //取消订单
         Task CancelOrderAsync(Guid id);
         //成交
-        Task TransactionAsync(TransactionInfo info);
-        //获取订单列表
-        Task<IEnumerable<OrderInfo>> GetOrderListAsync();
+        Task TransactionAsync(Guid Id, TransactionInfo info);
     }
 }

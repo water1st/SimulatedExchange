@@ -1,4 +1,4 @@
-﻿namespace SimulatedExchange.Domain.Orders
+﻿namespace SimulatedExchange.Queries.Orders
 {
     public enum Exchange
     {

@@ -1,4 +1,4 @@
-﻿namespace SimulatedExchange.Domain.Orders.Entities
+﻿namespace SimulatedExchange.Domain.Orders
 {
     public class OrderMemento : BaseMemento
     {

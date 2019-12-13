@@ -1,4 +1,4 @@
-﻿namespace SimulatedExchange.Domain.Orders.DTO
+﻿namespace SimulatedExchange.Domain.Orders
 {
     public class TransactionInfo
     {

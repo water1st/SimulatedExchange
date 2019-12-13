@@ -23,16 +23,19 @@ namespace SimulatedExchange.DataAccess.Repositories
         }
         public virtual async Task<TAggregateRoot> GetByIdAsync(Guid id)
         {
+            //获取快照
             var memento = await mementoStorage.GetMementoAsync(id);
+            //获取事件
             var events = await eventStorage.GetEventsAsync(id);
 
             var aggregateRoot = new TAggregateRoot();
             if (memento != null)
             {
+                //还原快照
                 events = events.Where(@event => @event.Version >= memento.Version);
                 aggregateRoot.SetMemento(memento);
             }
-
+            //还原事件
             aggregateRoot.RestoreEvents(events);
 
             return aggregateRoot;

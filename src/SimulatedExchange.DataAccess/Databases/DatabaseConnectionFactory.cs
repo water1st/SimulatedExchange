@@ -16,13 +16,16 @@ namespace SimulatedExchange.DataAccess.Databases
 
         public IDbConnection Create(string name)
         {
+            var providerName = name.Split('_')[0];
+
             var connectionString = configuration.GetConnectionString(name);
-            switch (name)
+
+            switch (providerName)
             {
-                case DatabaseConnectionNames.MYSQL_CONNECTION:
+                case "MySQL":
                     return new MySqlConnection(connectionString);
                 default:
-                    throw new Exception($"不支持name:\"{name}\"的数据库链接");
+                    throw new Exception($"不支持Provider:\"{providerName}\"的数据库链接");
             }
         }
     }
