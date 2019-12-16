@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using NeoSmart.AsyncLock;
+﻿using NeoSmart.AsyncLock;
 using SimulatedExchange.Domain;
 using SimulatedExchange.Exceptions;
 using SimulatedExchange.Storages;

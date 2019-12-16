@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SimulatedExchange.Domain.Orders;
+using SimulatedExchange.Domain.Orders.Service;
 using SimulatedExchange.Events;
 
 namespace SimulatedExchange.Domain
@@ -8,6 +10,8 @@ namespace SimulatedExchange.Domain
         public static IServiceCollection AddDomainLayout(IServiceCollection services)
         {
             AddEventHandlers(services);
+            AddDomainServices(services);
+
             return services;
         }
 
@@ -15,7 +19,14 @@ namespace SimulatedExchange.Domain
         {
             services.AddSingleton<IEventHandlerFactory, EventHandlerFactory>();
 
+            services.AddTransient<IEventHandler<NewOrderEvent>, OrderService>();
+            services.AddTransient<IEventHandler<CancelOrderEvent>, OrderService>();
+            services.AddTransient<IEventHandler<OrderTransactionEvent>, OrderService>();
+        }
 
+        private static void AddDomainServices(IServiceCollection services)
+        {
+            services.AddTransient<IOrderService, OrderService>();
         }
     }
 }

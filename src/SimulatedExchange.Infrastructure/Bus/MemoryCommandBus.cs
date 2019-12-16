@@ -16,7 +16,7 @@ namespace SimulatedExchange.Infrastructure.Bus
 
         public async Task SendAsync<TCommand>(TCommand command) where TCommand : Command
         {
-            var handler = factory.GetHandler<TCommand>();
+            var handler = factory.GetHandler(command);
             if (handler != null)
             {
                 await handler.ExecuteAsync(command).ConfigureAwait(false);

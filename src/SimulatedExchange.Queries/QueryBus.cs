@@ -12,7 +12,7 @@ namespace SimulatedExchange.Queries
             this.bus = bus;
         }
 
-        public async Task<TQueryResult> Read<TQueryarameter, TQueryResult>(TQueryarameter parameter)
+        public async Task<TQueryResult> SendAsync<TQueryarameter, TQueryResult>(TQueryarameter parameter)
             where TQueryarameter : class
             where TQueryResult : class
         {

@@ -4,4 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SimulatedExchange.Commands\SimulatedExchange.Commands.csproj" />
+    <ProjectReference Include="..\SimulatedExchange.Queries\SimulatedExchange.Queries.csproj" />
+  </ItemGroup>
+
 </Project>

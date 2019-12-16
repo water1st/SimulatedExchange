@@ -2,6 +2,6 @@
 {
     public interface ICommandHandlerFactory
     {
-        ICommandHandler<TCommand> GetHandler<TCommand>() where TCommand : Command;
+        ICommandHandler<TCommand> GetHandler<TCommand>(TCommand command) where TCommand : Command;
     }
 }

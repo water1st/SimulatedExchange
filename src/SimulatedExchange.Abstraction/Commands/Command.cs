@@ -5,11 +5,9 @@ namespace SimulatedExchange.Commands
     public abstract class Command : ICommand
     {
         public Guid Id { get; private set; }
-        public int Version { get; private set; }
-        public Command(Guid id, int version)
+        public Command(Guid id)
         {
             Id = id;
-            Version = version;
         }
     }
 }

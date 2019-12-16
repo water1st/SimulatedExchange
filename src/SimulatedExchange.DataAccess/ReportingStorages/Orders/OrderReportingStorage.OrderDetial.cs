@@ -1,5 +1,4 @@
 ﻿using SimulatedExchange.Queries.Orders;
-using System;
 
 namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
 {

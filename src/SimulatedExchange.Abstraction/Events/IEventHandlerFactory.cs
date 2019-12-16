@@ -4,6 +4,6 @@ namespace SimulatedExchange.Events
 {
     public interface IEventHandlerFactory
     {
-        IEnumerable<IEventHandler<TEvent>> GetHandlers<TEvent>() where TEvent : Event;
+        IEnumerable<IEventHandler<TEvent>> GetHandlers<TEvent>(TEvent @event) where TEvent : Event;
     }
 }
