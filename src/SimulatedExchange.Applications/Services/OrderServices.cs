@@ -6,7 +6,6 @@ using SimulatedExchange.Queries;
 using SimulatedExchange.Queries.Orders;
 using SimulatedExchange.Reporting;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Applications.Services
@@ -33,7 +32,7 @@ namespace SimulatedExchange.Applications.Services
         public async Task CreateNewOrder(OrderInfo orderInfo)
         {
             var command = new AddOrderCommand(Guid.NewGuid(),
-                orderInfo.Symbols, orderInfo.Price,
+                orderInfo.PairSymbols, orderInfo.Price,
                 orderInfo.Amount, orderInfo.Exchange, orderInfo.Type);
 
             await commandBus.SendAsync(command);
@@ -48,7 +47,7 @@ namespace SimulatedExchange.Applications.Services
             return mapper.Map(result);
         }
 
-        public async Task<IEnumerable<OrderListItem>> GetList(int pageIndex, int pageSize)
+        public async Task<OrderList> GetList(int pageIndex, int pageSize)
         {
             var query = new GetOrdersTransaction { Paging = new QueryPagingInfo { PageIndex = pageIndex, PageSize = pageSize } };
 

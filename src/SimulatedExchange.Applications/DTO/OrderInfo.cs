@@ -3,7 +3,7 @@
     public class OrderInfo
     {
         //币对
-        public string Symbols { get; set; }
+        public string PairSymbols { get; set; }
         //委托价格
         public decimal Price { get; set; }
         //委托总量

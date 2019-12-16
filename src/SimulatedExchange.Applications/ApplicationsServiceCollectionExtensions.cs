@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SimulatedExchange.Applications.Mapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SimulatedExchange.Commands;
+using SimulatedExchange.Queries;
 
 namespace SimulatedExchange.Applications
 {
@@ -10,6 +9,7 @@ namespace SimulatedExchange.Applications
     {
         public static IServiceCollection AddApplicationLayout(this IServiceCollection services)
         {
+
             AddApplicationServices(services);
             AddMapper(services);
 

@@ -1,8 +1,5 @@
 ﻿using SimulatedExchange.Applications.DTO;
 using SimulatedExchange.Queries.Orders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SimulatedExchange.Applications.Mapper
 {

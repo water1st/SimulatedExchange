@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SimulatedExchange.DataAccess.Databases;
+using SimulatedExchange.DataAccess.ReportingStorages;
 using SimulatedExchange.DataAccess.ReportingStorages.Orders;
 using SimulatedExchange.DataAccess.Repositories;
 using SimulatedExchange.DataAccess.Storages;
@@ -15,7 +16,7 @@ namespace SimulatedExchange.DataAccess
     {
         public static IServiceCollection AddDataAccessLayout(this IServiceCollection services)
         {
-            AddDatabaseConnectionFactory(services);
+            AddFactories(services);
             AddReportingStorages(services);
             AddRepositories(services);
             AddStorages(services);
@@ -23,9 +24,11 @@ namespace SimulatedExchange.DataAccess
             return services;
         }
 
-        private static void AddDatabaseConnectionFactory(IServiceCollection services)
+        private static void AddFactories(IServiceCollection services)
         {
             services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
+            services.AddSingleton<IReportingReadOnlyTransactionHandlerFactory, ReportingReadOnlyTransactionHandlerFactory>();
+            services.AddSingleton<IReportingWriteOnlyTransactionHandlerFactory, ReportingWriteOnlyTransactionHandlerFactory>();
         }
 
         private static void AddReportingStorages(IServiceCollection services)

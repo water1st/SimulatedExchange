@@ -6,6 +6,7 @@ namespace SimulatedExchange.Commands
     {
         public static IServiceCollection AddCommandLayout(this IServiceCollection services)
         {
+
             services.AddSingleton<ICommandHandlerFactory, CommandHandlerFactory>();
 
             return services;

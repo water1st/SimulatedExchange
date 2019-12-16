@@ -7,7 +7,7 @@ namespace SimulatedExchange.Domain
 {
     public static class DomainLayoutServiceCollectionExtensions
     {
-        public static IServiceCollection AddDomainLayout(IServiceCollection services)
+        public static IServiceCollection AddDomainLayout(this IServiceCollection services)
         {
             AddEventHandlers(services);
             AddDomainServices(services);
