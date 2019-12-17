@@ -44,14 +44,16 @@ namespace SimulatedExchange.Api.Controllers
 
         [HttpPut]
         [Route("{id}/deal")]
-        public async Task Deal([FromBody]OrderDealRequest request)
+        public async Task Deal([FromRoute]string id, [FromBody]OrderDealRequest request)
         {
+            await orderService.TransactionAsync(id, request.Amount, request.Price);
         }
 
         [HttpPut]
         [Route("{id}/cancel")]
-        public async Task Cancel()
+        public async Task Cancel([FromRoute]string id)
         {
+            await orderService.CalcelOrderAsync(id);
         }
     }
 }

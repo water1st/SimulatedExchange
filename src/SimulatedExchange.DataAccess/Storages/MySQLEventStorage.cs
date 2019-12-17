@@ -31,21 +31,42 @@ namespace SimulatedExchange.DataAccess.Storages
         {
             const string SELECT_SQL = "SELECT * FROM events_storage WHERE AggregateId = @aggregateId ORDER BY Version ASC";
 
-            var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB);
-            var datas = await connection.QueryAsync<PersistentObject>(SELECT_SQL, new { aggregateId = aggregateId.ToString() });
-
-            var result = datas.Select(data =>
-             {
-                 var json = data.Event;
-                 var type = Type.GetType(data.EventType);
-                 var @event = JsonConvert.DeserializeObject(json, type);
-                 return (Event)@event;
-             });
+            var result = await GetEventsAsync(SELECT_SQL, new { aggregateId = aggregateId.ToString() });
 
             if (!result.Any())
             {
                 throw new AggregateNotFoundException($"找不到聚合根：\"{aggregateId}\"");
             }
+
+            return result;
+        }
+
+        public async Task<IEnumerable<Event>> GetEventsAsync(Guid aggregateId, int maxVersion)
+        {
+            const string SELECT_SQL = "SELECT * FROM events_storage WHERE AggregateId = @aggregateId AND Version <= @version ORDER BY Version ASC";
+
+            var result = await GetEventsAsync(SELECT_SQL, new { aggregateId = aggregateId.ToString(), version = maxVersion });
+
+            if (!result.Any())
+            {
+                throw new AggregateNotFoundException($"找不到聚合根：\"{aggregateId}\"");
+            }
+
+            return result;
+        }
+
+        private async Task<IEnumerable<Event>> GetEventsAsync(string sql, object parm)
+        {
+            var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB);
+            var datas = await connection.QueryAsync<PersistentObject>(sql, parm);
+
+            var result = datas.Select(data =>
+            {
+                var json = data.Event;
+                var type = Type.GetType(data.EventType);
+                var @event = JsonConvert.DeserializeObject(json, type);
+                return (Event)@event;
+            });
 
             return result;
         }

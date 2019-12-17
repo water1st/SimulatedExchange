@@ -12,8 +12,4 @@
     <ProjectReference Include="..\SimulatedExchange.Abstraction\SimulatedExchange.Abstraction.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Orders\Handlers\" />
-  </ItemGroup>
-
 </Project>

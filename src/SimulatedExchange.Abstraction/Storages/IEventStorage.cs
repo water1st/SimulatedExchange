@@ -9,6 +9,7 @@ namespace SimulatedExchange.Storages
     public interface IEventStorage
     {
         Task<IEnumerable<Event>> GetEventsAsync(Guid aggregateId);
+        Task<IEnumerable<Event>> GetEventsAsync(Guid aggregateId, int maxVersion);
         Task SaveEventsAsync<TAggregateRoot>(TAggregateRoot aggregateRoot) where TAggregateRoot : AggregateRoot;
     }
 }

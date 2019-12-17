@@ -1,8 +1,10 @@
 ﻿using NeoSmart.AsyncLock;
 using SimulatedExchange.Domain;
+using SimulatedExchange.Events;
 using SimulatedExchange.Exceptions;
 using SimulatedExchange.Storages;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,7 +28,26 @@ namespace SimulatedExchange.DataAccess.Repositories
             var memento = await mementoStorage.GetMementoAsync(id);
             //获取事件
             var events = await eventStorage.GetEventsAsync(id);
+            //还原事件
+            var result = Restore(events, memento);
 
+            return result;
+        }
+
+        public async Task<TAggregateRoot> GetByIdAsync(Guid id, int version)
+        {
+            //获取快照
+            var memento = await mementoStorage.GetMementoAsync(id, version);
+            //获取事件
+            var events = await eventStorage.GetEventsAsync(id, version);
+            //还原事件
+            var result = Restore(events, memento);
+
+            return result;
+        }
+
+        private TAggregateRoot Restore(IEnumerable<Event> events, BaseMemento memento)
+        {
             var aggregateRoot = new TAggregateRoot();
             if (memento != null)
             {

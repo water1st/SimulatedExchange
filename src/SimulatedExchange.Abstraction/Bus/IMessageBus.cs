@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SimulatedExchange.Messages;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Bus
@@ -8,6 +6,6 @@ namespace SimulatedExchange.Bus
     public interface IMessageBus
     {
         Task SendAsync<TMessage>(TMessage message)
-            where TMessage : class;
+            where TMessage : IMessage;
     }
 }

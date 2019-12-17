@@ -23,7 +23,7 @@ namespace SimulatedExchange.Applications.Services
             this.mapper = mapper;
         }
 
-        public async Task CalcelOrder(string id)
+        public async Task CalcelOrderAsync(string id)
         {
             var command = new CancelOrderCommand(Guid.Parse(id));
             await commandBus.SendAsync(command);

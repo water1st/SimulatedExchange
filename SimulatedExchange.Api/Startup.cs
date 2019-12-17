@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using SimulatedExchange.Api.Filters;
+using SimulatedExchange.Api.Hubs;
 using SimulatedExchange.Applications;
 using SimulatedExchange.Commands;
 using SimulatedExchange.DataAccess;
@@ -35,6 +36,7 @@ namespace SimulatedExchange.Api
 
             services.AddSignalRCore();
 
+            services.AddApi();
             services.AddApplicationLayout();
             services.AddQueryLayout();
             services.AddCommandLayout();
@@ -71,6 +73,7 @@ namespace SimulatedExchange.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<TradeReportHub>("api/TRADE_REPORT_CHANNEL");
             });
 
 

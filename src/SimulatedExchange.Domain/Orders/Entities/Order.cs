@@ -6,8 +6,14 @@ namespace SimulatedExchange.Domain.Orders
     public class Order : AggregateRoot,
         IAggregateRootEventHandler<NewOrderEvent>,
         IAggregateRootEventHandler<CancelOrderEvent>,
-        IAggregateRootEventHandler<OrderTransactionEvent>
+        IAggregateRootEventHandler<PartialTransactionEvent>,
+        IAggregateRootEventHandler<AllTransactionEvent>
     {
+        public Order()
+        {
+            Id = Guid.NewGuid();
+        }
+
         //币对
         public PairSymbols PairSymbols { get; private set; }
         //委托价格 
@@ -31,14 +37,25 @@ namespace SimulatedExchange.Domain.Orders
 
         public void Cancel()
         {
-            var @event = new CancelOrderEvent();
+            var @event = new CancelOrderEvent(Id);
             ApplyEvent(@event);
         }
 
         public void Deal(TransactionInfo info)
         {
-            var @event = new OrderTransactionEvent(info.Price, info.Amount);
-            ApplyEvent(@event);
+            var volume = Volume + info.Amount;
+            if (volume > TotalAmount)
+            {
+                throw new ArgumentOutOfRangeException("成交量大于委托总量");
+            }
+            else if (volume == TotalAmount)
+            {
+                ApplyEvent(new AllTransactionEvent(Id, info.Price, TotalAmount));
+            }
+            else
+            {
+                ApplyEvent(new PartialTransactionEvent(Id, info.Price, volume));
+            }
         }
 
         public override BaseMemento GetMemento()
@@ -87,24 +104,18 @@ namespace SimulatedExchange.Domain.Orders
             Status = OrderStatus.Canceled;
         }
 
-        public void Handle(OrderTransactionEvent @event)
+        public void Handle(AllTransactionEvent @event)
         {
-            var volume = @event.Amount + Volume;
-            if (volume > TotalAmount)
-            {
-                throw new ArgumentOutOfRangeException("成交量大于委托量");
-            }
-            else if (volume == TotalAmount)
-            {
-                Status = OrderStatus.FullTransaction;
-            }
-            else
-            {
-                Status = OrderStatus.PartialTransaction;
-            }
-            @event.OrderStatus = Status;
             Price = @event.Price;
+            Volume = @event.Amount;
+            Status = OrderStatus.FullTransaction;
         }
 
+        public void Handle(PartialTransactionEvent @event)
+        {
+            Price = @event.Price;
+            Volume = @event.Amount;
+            Status = OrderStatus.PartialTransaction;
+        }
     }
 }

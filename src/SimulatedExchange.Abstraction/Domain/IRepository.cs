@@ -7,6 +7,7 @@ namespace SimulatedExchange.Domain
         where TAggregateRoot : AggregateRoot, new()
     {
         Task SaveAsync(TAggregateRoot aggregateRoot);
+        Task<TAggregateRoot> GetByIdAsync(Guid primarykey, int maxVersion);
         Task<TAggregateRoot> GetByIdAsync(Guid primarykey);
     }
 }

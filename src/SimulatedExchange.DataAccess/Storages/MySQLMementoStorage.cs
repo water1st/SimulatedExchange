@@ -22,10 +22,25 @@ namespace SimulatedExchange.DataAccess.Storages
 
         public async Task<BaseMemento> GetMementoAsync(Guid aggregateId)
         {
-            const string SELECT_SQL = "SELECT * FROM memento_storage WHERE Version = (SELECT MAX(Version) FROM memento_storage WHERE AggregateId=@aggregateId)";
+            const string SELECT_SQL = "SELECT * FROM memento_storage WHERE Version = (SELECT MAX(Version) FROM memento_storage WHERE AggregateId = @aggregateId) AND AggregateId = @aggregateId";
+
+            var result = await GetMementoAsync(SELECT_SQL, new { aggregateId = aggregateId.ToString() });
+            return result;
+        }
+
+        public async Task<BaseMemento> GetMementoAsync(Guid aggregateId, int maxVersion)
+        {
+            const string SELECT_SQL = "SELECT * FROM memento_storage WHERE Version <= @version AND AggregateId = @aggregateId";
+
+            var result = await GetMementoAsync(SELECT_SQL, new { aggregateId = aggregateId.ToString(), version = maxVersion });
+            return result;
+        }
+
+        private async Task<BaseMemento> GetMementoAsync(string sql, object parm)
+        {
             var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB);
 
-            var data = await connection.QueryFirstOrDefaultAsync<PersistentObject>(SELECT_SQL, new { aggregateId = aggregateId.ToString() });
+            var data = await connection.QueryFirstOrDefaultAsync<PersistentObject>(sql, parm);
 
             if (data == null)
                 return null;
