@@ -13,17 +13,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.Abstracti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.Utilities", "src\SimulatedExchange.Utilities\SimulatedExchange.Utilities.csproj", "{3B8CE0AB-0286-47F2-AADA-16A16586E6CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatedExchange.Commands", "src\SimulatedExchange.Commands\SimulatedExchange.Commands.csproj", "{6BB26F1A-BD9C-40D1-80B0-7DB639D8E893}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.Commands", "src\SimulatedExchange.Commands\SimulatedExchange.Commands.csproj", "{6BB26F1A-BD9C-40D1-80B0-7DB639D8E893}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatedExchange.Queries", "src\SimulatedExchange.Queries\SimulatedExchange.Queries.csproj", "{4C41DE9B-0C7F-44B9-9B4B-4AF15D5DDBF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.Queries", "src\SimulatedExchange.Queries\SimulatedExchange.Queries.csproj", "{4C41DE9B-0C7F-44B9-9B4B-4AF15D5DDBF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatedExchange.Domain", "src\SimulatedExchange.Domain\SimulatedExchange.Domain.csproj", "{A3BBA1FC-FB12-4051-A8D9-15CA83399B5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.Domain", "src\SimulatedExchange.Domain\SimulatedExchange.Domain.csproj", "{A3BBA1FC-FB12-4051-A8D9-15CA83399B5B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.Infrastructure", "src\SimulatedExchange.Infrastructure\SimulatedExchange.Infrastructure.csproj", "{ECA6D9DC-9750-4BC1-8FC1-0BA2E1F0A1A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatedExchange.Applications", "src\SimulatedExchange.Applications\SimulatedExchange.Applications.csproj", "{7E2F95C5-07C6-42DB-B378-A2A90A45BC49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.Applications", "src\SimulatedExchange.Applications\SimulatedExchange.Applications.csproj", "{7E2F95C5-07C6-42DB-B378-A2A90A45BC49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatedExchange.Api", "SimulatedExchange.Api\SimulatedExchange.Api.csproj", "{E209A823-D997-46E9-ABBF-529CDC015E69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.Api", "src\SimulatedExchange.Api\SimulatedExchange.Api.csproj", "{1A53929A-A283-4B60-B009-EC8B96998B1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +63,10 @@ Global
 		{7E2F95C5-07C6-42DB-B378-A2A90A45BC49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E2F95C5-07C6-42DB-B378-A2A90A45BC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E2F95C5-07C6-42DB-B378-A2A90A45BC49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E209A823-D997-46E9-ABBF-529CDC015E69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E209A823-D997-46E9-ABBF-529CDC015E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E209A823-D997-46E9-ABBF-529CDC015E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E209A823-D997-46E9-ABBF-529CDC015E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A53929A-A283-4B60-B009-EC8B96998B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A53929A-A283-4B60-B009-EC8B96998B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A53929A-A283-4B60-B009-EC8B96998B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A53929A-A283-4B60-B009-EC8B96998B1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,7 +80,7 @@ Global
 		{A3BBA1FC-FB12-4051-A8D9-15CA83399B5B} = {D4755BA7-A689-4E74-94DA-C3B47794D542}
 		{ECA6D9DC-9750-4BC1-8FC1-0BA2E1F0A1A6} = {D4755BA7-A689-4E74-94DA-C3B47794D542}
 		{7E2F95C5-07C6-42DB-B378-A2A90A45BC49} = {D4755BA7-A689-4E74-94DA-C3B47794D542}
-		{E209A823-D997-46E9-ABBF-529CDC015E69} = {D4755BA7-A689-4E74-94DA-C3B47794D542}
+		{1A53929A-A283-4B60-B009-EC8B96998B1E} = {D4755BA7-A689-4E74-94DA-C3B47794D542}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8F3F05D-5A56-40C8-9A7F-575460D8D99F}
