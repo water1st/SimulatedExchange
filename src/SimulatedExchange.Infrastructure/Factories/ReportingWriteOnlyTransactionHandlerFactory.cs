@@ -1,7 +1,7 @@
 ﻿using SimulatedExchange.Reporting;
 using System;
 
-namespace SimulatedExchange.DataAccess.ReportingStorages
+namespace SimulatedExchange.Infrastructure.Factories
 {
     public class ReportingWriteOnlyTransactionHandlerFactory : IReportingWriteOnlyTransactionHandlerFactory
     {

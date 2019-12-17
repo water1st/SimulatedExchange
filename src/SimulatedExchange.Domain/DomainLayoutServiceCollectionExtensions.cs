@@ -17,8 +17,6 @@ namespace SimulatedExchange.Domain
 
         private static void AddEventHandlers(IServiceCollection services)
         {
-            services.AddSingleton<IEventHandlerFactory, EventHandlerFactory>();
-
             services.AddTransient<IEventHandler<NewOrderEvent>, OrderReportMessageService>();
             services.AddTransient<IEventHandler<CancelOrderEvent>, OrderReportMessageService>();
             services.AddTransient<IEventHandler<PartialTransactionEvent>, OrderReportMessageService>();

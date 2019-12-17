@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 
-namespace SimulatedExchange.Domain
+namespace SimulatedExchange.Infrastructure.Factories
 {
     public class EventHandlerFactory : IEventHandlerFactory
     {

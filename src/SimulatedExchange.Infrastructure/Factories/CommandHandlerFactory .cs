@@ -1,6 +1,7 @@
-﻿using System;
+﻿using SimulatedExchange.Commands;
+using System;
 
-namespace SimulatedExchange.Commands
+namespace SimulatedExchange.Infrastructure.Factories
 {
     public class CommandHandlerFactory : ICommandHandlerFactory
     {
