@@ -15,7 +15,12 @@ namespace SimulatedExchange.Infrastructure.Bus
 
         public async Task SendAsync<TMessage>(TMessage message) where TMessage : IMessage
         {
-            var handlers = factory.GetHandlers(message);
+            await SendMessageAsync(Converter.ChangeType(message, message.GetType()));
+        }
+
+        private async Task SendMessageAsync<TMessage>(TMessage message) where TMessage : IMessage
+        {
+            var handlers = factory.GetHandlers<TMessage>();
             foreach (var handler in handlers)
             {
                 await handler.Handle(message).ConfigureAwait(false);

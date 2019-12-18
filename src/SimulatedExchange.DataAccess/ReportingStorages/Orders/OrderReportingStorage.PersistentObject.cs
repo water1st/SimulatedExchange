@@ -1,4 +1,6 @@
-﻿namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
+﻿using System;
+
+namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
 {
     public partial class OrderReportingStorage
     {
@@ -22,9 +24,9 @@
             //订单状态
             public int Status { get; set; }
             //创建时间
-            public long CreatedTimeUtc { get; set; }
+            public DateTime CreatedTimeUtc { get; set; }
             //修改时间
-            public long ModifyedTimeUtc { get; set; }
+            public DateTime ModifyedTimeUtc { get; set; }
         }
     }
 

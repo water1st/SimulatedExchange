@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 18/12/2019 11:46:40
+ Date: 18/12/2019 16:09:45
 */
 
 SET NAMES utf8mb4;
@@ -31,8 +31,8 @@ CREATE TABLE `orders`  (
   `Exchange` int(11) NULL DEFAULT NULL,
   `Type` int(11) NULL DEFAULT NULL,
   `Status` int(11) NULL DEFAULT NULL,
-  `CreatedTimeUtc` timestamp(0) NULL DEFAULT NULL,
-  `ModifyedTimeUtc` timestamp(0) NULL DEFAULT NULL,
+  `CreatedTimeUtc` datetime(0) NULL DEFAULT NULL,
+  `ModifyedTimeUtc` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 

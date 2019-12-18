@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SimulatedExchange.Applications.Mapper;
-using SimulatedExchange.Commands;
-using SimulatedExchange.Queries;
+using SimulatedExchange.Applications.Services;
 
 namespace SimulatedExchange.Applications
 {
@@ -18,12 +17,12 @@ namespace SimulatedExchange.Applications
 
         private static void AddApplicationServices(IServiceCollection services)
         {
-            services.AddTransient<IOrderServiceMapper, OrderServiceMapper>();
+            services.AddTransient<IOrderServices, OrderServices>();
         }
 
         private static void AddMapper(IServiceCollection services)
         {
-
+            services.AddTransient<IOrderServiceMapper, OrderServiceMapper>();
         }
     }
 }

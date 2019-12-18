@@ -4,11 +4,9 @@ using System.Threading.Tasks;
 
 namespace SimulatedExchange.Domain.Orders
 {
-    public class OrderReportMessageService :
-        IEventHandler<NewOrderEvent>,
+    public class OrderReportMessageService : IEventHandler<NewOrderEvent>,
         IEventHandler<CancelOrderEvent>,
-        IEventHandler<PartialTransactionEvent>,
-        IEventHandler<AllTransactionEvent>
+        IEventHandler<TransactionEvent>
     {
         private readonly IMessageBus messageBus;
         public OrderReportMessageService(IMessageBus messageBus)
@@ -20,7 +18,7 @@ namespace SimulatedExchange.Domain.Orders
         {
             var message = new OrderReportMessage();
 
-            message.Id = @event.Id.ToString();
+            message.Id = @event.AggregateId.ToString();
             message.Status = (int)OrderStatus.Canceled;
 
             await messageBus.SendAsync(message);
@@ -30,28 +28,18 @@ namespace SimulatedExchange.Domain.Orders
         {
             var message = new OrderReportMessage();
 
-            message.Id = @event.Id.ToString();
+            message.Id = @event.AggregateId.ToString();
             message.Status = (int)OrderStatus.Opened;
 
             await messageBus.SendAsync(message);
         }
 
-        public async Task Handle(AllTransactionEvent @event)
+        public async Task Handle(TransactionEvent @event)
         {
             var message = new OrderReportMessage();
 
-            message.Id = @event.Id.ToString();
-            message.Status = (int)OrderStatus.FullTransaction;
-
-            await messageBus.SendAsync(message);
-        }
-
-        public async Task Handle(PartialTransactionEvent @event)
-        {
-            var message = new OrderReportMessage();
-
-            message.Id = @event.Id.ToString();
-            message.Status = (int)OrderStatus.PartialTransaction;
+            message.Id = @event.AggregateId.ToString();
+            message.Status = (int)@event.OrderStatus;
 
             await messageBus.SendAsync(message);
         }

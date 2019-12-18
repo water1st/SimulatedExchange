@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Logging;
 using SimulatedExchange.DataAccess.Databases;
 using SimulatedExchange.Domain.Orders;
 using SimulatedExchange.Queries.Orders;
@@ -12,10 +13,12 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
     public partial class OrderReportingStorage : IOrderReportingReadOnlyTransactionHandler, IOrderReportingWriteOnlyTransactionHandler
     {
         private readonly IDatabaseConnectionFactory factory;
+        private readonly ILogger logger;
 
-        public OrderReportingStorage(IDatabaseConnectionFactory factory)
+        public OrderReportingStorage(IDatabaseConnectionFactory factory, ILogger<OrderReportingStorage> logger)
         {
             this.factory = factory;
+            this.logger = logger;
         }
 
         public async Task<IOrderDetial> Read(GetOrderTransaction readParameter)
@@ -72,7 +75,7 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
                 Exchange = parameter.Exchange,
                 Type = parameter.Type,
                 Status = 0,
-                CreatedTimeUtc = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                CreatedTimeUtc = DateTime.UtcNow,
             });
         }
 
@@ -83,7 +86,8 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
             await ExecuteSQLAsync(UPDATE_SQL, new
             {
                 Id = parameter.Id.ToString(),
-                Status = (int)parameter.Status
+                Status = (int)parameter.Status,
+                ModifyedTimeUtc = DateTime.UtcNow
             });
         }
 
@@ -95,25 +99,32 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
             {
                 Id = parameter.Id.ToString(),
                 Status = (int)parameter.Status,
-                parameter.Volume
+                Volume = parameter.Volume,
+                ModifyedTimeUtc = DateTime.UtcNow
             });
         }
 
         private async Task ExecuteSQLAsync(string sql, object @object)
         {
-            var connection = factory.Create(DatabaseConnectionNames.MYSQL_READ_DB);
-            using (var transaction = connection.BeginTransaction())
+            using (var connection = factory.Create(DatabaseConnectionNames.MYSQL_READ_DB))
             {
-                try
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
                 {
-                    await connection.ExecuteAsync(sql, @object, transaction);
-                    transaction.Commit();
+                    try
+                    {
+                        await connection.ExecuteAsync(sql, @object, transaction);
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, ex.Message);
+                        transaction.Rollback();
+                    }
                 }
-                catch
-                {
-                    transaction.Rollback();
-                }
+                connection.Close();
             }
+
         }
 
         private OrderDetial Map(PersistentObject @object)

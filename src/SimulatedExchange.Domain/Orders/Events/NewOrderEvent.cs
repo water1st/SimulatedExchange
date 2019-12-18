@@ -1,26 +1,19 @@
 ﻿using SimulatedExchange.Events;
+using System;
 
 namespace SimulatedExchange.Domain.Orders
 {
     public class NewOrderEvent : Event
     {
-        public NewOrderEvent(PairSymbols symbols, decimal price, decimal amount, Exchange exchange, OrderType type)
-        {
-            Symbols = symbols;
-            Price = price;
-            Amount = amount;
-            Exchange = exchange;
-            Type = type;
-        }
         //币对
-        public PairSymbols Symbols { get; }
+        public PairSymbols Symbols { get; set; }
         //委托价格
-        public decimal Price { get; }
+        public decimal Price { get; set; }
         //委托总量
-        public decimal Amount { get; }
+        public decimal Amount { get; set; }
         //交易所
-        public Exchange Exchange { get; }
+        public Exchange Exchange { get; set; }
         // 订单类型
-        public OrderType Type { get; }
+        public OrderType Type { get; set; }
     }
 }

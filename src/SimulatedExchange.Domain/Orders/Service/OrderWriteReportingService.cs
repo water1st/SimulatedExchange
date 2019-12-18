@@ -4,11 +4,9 @@ using System.Threading.Tasks;
 
 namespace SimulatedExchange.Domain.Orders
 {
-    public class OrderWriteReportingService :
-        IEventHandler<NewOrderEvent>,
+    public class OrderWriteReportingService : IEventHandler<NewOrderEvent>,
         IEventHandler<CancelOrderEvent>,
-        IEventHandler<PartialTransactionEvent>,
-        IEventHandler<AllTransactionEvent>
+        IEventHandler<TransactionEvent>
     {
         private readonly IWriteOnlyRepotingBus repotingBus;
         public OrderWriteReportingService(IWriteOnlyRepotingBus repotingBus)
@@ -21,7 +19,7 @@ namespace SimulatedExchange.Domain.Orders
             var transaction = new AddOrderTransaction();
             transaction.Amount = @event.Amount;
             transaction.Exchange = (int)@event.Exchange;
-            transaction.Id = @event.Id.ToString();
+            transaction.Id = @event.AggregateId.ToString();
             transaction.Price = @event.Price;
             transaction.Symbols = @event.Symbols.ToString();
             transaction.Type = (int)@event.Type;
@@ -33,28 +31,19 @@ namespace SimulatedExchange.Domain.Orders
         {
             var transaction = new UpdateOrderStatusTransaction();
 
-            transaction.Id = @event.Id.ToString();
+            transaction.Id = @event.AggregateId.ToString();
             transaction.Status = OrderStatus.Canceled;
 
             await repotingBus.Write(transaction);
         }
 
-        public async Task Handle(PartialTransactionEvent @event)
+        public async Task Handle(TransactionEvent @event)
         {
             var transaction = new UpdateOrderTransaction();
 
-            transaction.Status = OrderStatus.PartialTransaction;
+            transaction.Status = @event.OrderStatus;
             transaction.Volume = @event.Amount;
-
-            await repotingBus.Write(transaction);
-        }
-
-        public async Task Handle(AllTransactionEvent @event)
-        {
-            var transaction = new UpdateOrderTransaction();
-
-            transaction.Status = OrderStatus.FullTransaction;
-            transaction.Volume = @event.Amount;
+            transaction.Id = @event.AggregateId.ToString();
 
             await repotingBus.Write(transaction);
         }

@@ -58,29 +58,34 @@ namespace SimulatedExchange.DataAccess.Storages
             var json = JsonConvert.SerializeObject(memento);
             var type = memento.GetType();
 
-            var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB);
-
-            using (var transaction = connection.BeginTransaction())
+            using (var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB))
             {
-                try
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
                 {
-                    await connection.ExecuteAsync(INSERT_SQL, new
+                    try
                     {
-                        id = Guid.NewGuid().ToString(),
-                        aggregateId = memento.AggregateRootId.ToString(),
-                        memento = json,
-                        mementoType = type.FullName,
-                        version = memento.Version
-                    }, transaction);
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, ex.Message);
-                    transaction.Rollback();
-                }
+                        await connection.ExecuteAsync(INSERT_SQL, new
+                        {
+                            id = Guid.NewGuid().ToString(),
+                            aggregateId = memento.AggregateRootId.ToString(),
+                            memento = json,
+                            mementoType = type.FullName,
+                            version = memento.Version
+                        }, transaction);
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, ex.Message);
+                        transaction.Rollback();
+                    }
 
+                }
+                connection.Close();
             }
+
+            
         }
     }
 }

@@ -16,7 +16,7 @@ namespace SimulatedExchange.Infrastructure.Bus
 
         public async Task Write<TWriterParameter>(TWriterParameter parameter) where TWriterParameter : class
         {
-            var writer = factory.GetWriter(parameter);
+            var writer = factory.GetWriter<TWriterParameter>();
             if (writer != null)
             {
                 await writer.Write(parameter).ConfigureAwait(false);

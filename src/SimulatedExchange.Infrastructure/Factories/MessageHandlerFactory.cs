@@ -2,7 +2,6 @@
 using SimulatedExchange.Messages;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SimulatedExchange.Infrastructure.Factories
 {
@@ -15,10 +14,9 @@ namespace SimulatedExchange.Infrastructure.Factories
             this.provider = provider;
         }
 
-        public IEnumerable<IMessageHandler<TMessage>> GetHandlers<TMessage>(TMessage message) where TMessage : IMessage
+        public IEnumerable<IMessageHandler<TMessage>> GetHandlers<TMessage>() where TMessage : IMessage
         {
-            var type = typeof(IMessageHandler<>).MakeGenericType(message.GetType());
-            return provider.GetServices(type).Select(handler => (IMessageHandler<TMessage>)handler);
+            return provider.GetServices<IMessageHandler<TMessage>>();
         }
     }
 }

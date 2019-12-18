@@ -15,6 +15,7 @@ namespace SimulatedExchange.Domain
         public AggregateRoot()
         {
             uncommitEvents = new ConcurrentQueue<Event>();
+            Id = Guid.NewGuid();
         }
 
         public Guid Id { get; protected set; }
@@ -43,9 +44,10 @@ namespace SimulatedExchange.Domain
             {
                 ApplyEvent(@event, false);
             }
-
-            Version = history.Last().Version;
+            var last = history.Last();
+            Version = last.Version;
             EventVersion = Version;
+            Id = last.AggregateId;
         }
 
         public void MarkEventCommited()

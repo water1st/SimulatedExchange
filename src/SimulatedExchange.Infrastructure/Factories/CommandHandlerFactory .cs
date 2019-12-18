@@ -1,5 +1,6 @@
 ﻿using SimulatedExchange.Commands;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SimulatedExchange.Infrastructure.Factories
 {
@@ -12,10 +13,9 @@ namespace SimulatedExchange.Infrastructure.Factories
             this.provider = provider;
         }
 
-        public ICommandHandler<TCommand> GetHandler<TCommand>(TCommand command) where TCommand : Command
+        public ICommandHandler<TCommand> GetHandler<TCommand>() where TCommand : Command
         {
-            var type = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
-            return (ICommandHandler<TCommand>)provider.GetService(type);
+            return provider.GetService<ICommandHandler<TCommand>>();
         }
     }
 }

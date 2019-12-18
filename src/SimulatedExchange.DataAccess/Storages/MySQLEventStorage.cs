@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SimulatedExchange.DataAccess.Databases;
 using SimulatedExchange.Domain;
 using SimulatedExchange.Events;
@@ -9,6 +10,7 @@ using SimulatedExchange.Storages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.DataAccess.Storages
@@ -18,13 +20,14 @@ namespace SimulatedExchange.DataAccess.Storages
         private readonly IDatabaseConnectionFactory connectionFactory;
         private readonly ILogger<MySQLEventStorage> logger;
         private readonly IMementoStorage mementoStorage;
-
+        private readonly Assembly assembly;
         public MySQLEventStorage(IDatabaseConnectionFactory connectionFactory,
             ILogger<MySQLEventStorage> logger, IMementoStorage mementoStorage)
         {
             this.connectionFactory = connectionFactory;
             this.logger = logger;
             this.mementoStorage = mementoStorage;
+            assembly = typeof(DomainLayoutServiceCollectionExtensions).Assembly;
         }
 
         public async Task<IEnumerable<Event>> GetEventsAsync(Guid aggregateId)
@@ -59,11 +62,10 @@ namespace SimulatedExchange.DataAccess.Storages
         {
             var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB);
             var datas = await connection.QueryAsync<PersistentObject>(sql, parm);
-
             var result = datas.Select(data =>
             {
                 var json = data.Event;
-                var type = Type.GetType(data.EventType);
+                var type = assembly.GetType(data.EventType);
                 var @event = JsonConvert.DeserializeObject(json, type);
                 return (Event)@event;
             });
@@ -77,44 +79,49 @@ namespace SimulatedExchange.DataAccess.Storages
             var version = aggregateRoot.Version;
 
             const string INSERT_SQL = "INSERT INTO events_storage (Id,AggregateId,Event,EventType,Version) VALUES (@id,@aggregateId,@event,@eventType,@version)";
-            var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB);
-
-            using (var transaction = connection.BeginTransaction())
+            using (var connection = connectionFactory.Create(DatabaseConnectionNames.MYSQL_WRITE_DB))
             {
-                try
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
                 {
-                    foreach (var @event in events)
+                    try
                     {
-                        version++;
-                        //每1024个事件创建一个快照
-                        if (version % 1024 == 0)
+                        foreach (var @event in events)
                         {
-                            var memento = aggregateRoot.GetMemento();
-                            memento.Version = version;
-                            await mementoStorage.SaveMementoAsync(memento);
+                            version++;
+                            @event.Version = version;
+                            @event.Id = Guid.NewGuid();
+                            //每1024个事件创建一个快照
+                            if (version % 1024 == 0)
+                            {
+                                var memento = aggregateRoot.GetMemento();
+                                memento.Version = version;
+                                await mementoStorage.SaveMementoAsync(memento);
+                            }
+                            var json = JsonConvert.SerializeObject(@event);
+                            var type = @event.GetType();
+
+                            await connection.ExecuteAsync(INSERT_SQL, new
+                            {
+                                Id = @event.Id.ToString(),
+                                aggregateId = aggregateRoot.Id.ToString(),
+                                Event = json,
+                                EventType = type.FullName,
+                                Version = version
+                            }, transaction);
                         }
 
-                        var json = JsonConvert.SerializeObject(@event);
-                        var type = @event.GetType();
-
-                        await connection.ExecuteAsync(INSERT_SQL, new
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            aggregateId = aggregateRoot.Id.ToString(),
-                            Event = json,
-                            EventType = type.FullName,
-                            Version = version
-                        }, transaction);
+                        transaction.Commit();
                     }
-
-                    transaction.Commit();
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, ex.Message);
+                        transaction.Rollback();
+                    }
                 }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, ex.Message);
-                    transaction.Rollback();
-                }
+                connection.Close();
             }
+
 
         }
     }

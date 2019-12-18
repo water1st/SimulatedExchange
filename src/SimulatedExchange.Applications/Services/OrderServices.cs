@@ -49,7 +49,12 @@ namespace SimulatedExchange.Applications.Services
 
         public async Task<OrderList> GetList(int pageIndex, int pageSize)
         {
-            var query = new GetOrdersTransaction { Paging = new QueryPagingInfo { PageIndex = pageIndex, PageSize = pageSize } };
+            QueryPagingInfo paging = null;
+            if (pageIndex > 0 && pageSize > 0)
+            {
+                paging = new QueryPagingInfo { PageIndex = pageIndex, PageSize = pageSize };
+            }
+            var query = new GetOrdersTransaction { Paging = paging };
 
             var result = await queryBus.SendAsync<GetOrdersTransaction, IOrderList>(query);
 

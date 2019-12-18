@@ -6,6 +6,6 @@ namespace SimulatedExchange.Events
     {
         public int Version { get; set; }
         public Guid AggregateId { get; set; }
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
     }
 }

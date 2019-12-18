@@ -1,4 +1,5 @@
-﻿using SimulatedExchange.Reporting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SimulatedExchange.Reporting;
 using System;
 
 namespace SimulatedExchange.Infrastructure.Factories
@@ -12,10 +13,9 @@ namespace SimulatedExchange.Infrastructure.Factories
             this.provider = provider;
         }
 
-        public IReportingWriteOnlyTransactionHandler<TWriterParameter> GetWriter<TWriterParameter>(TWriterParameter parameter) where TWriterParameter : class
+        public IReportingWriteOnlyTransactionHandler<TWriterParameter> GetWriter<TWriterParameter>() where TWriterParameter : class
         {
-            var type = typeof(IReportingWriteOnlyTransactionHandler<>).MakeGenericType(parameter.GetType());
-            return (IReportingWriteOnlyTransactionHandler<TWriterParameter>)provider.GetService(type);
+            return provider.GetService<IReportingWriteOnlyTransactionHandler<TWriterParameter>>();
         }
     }
 }

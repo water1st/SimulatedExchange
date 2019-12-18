@@ -16,11 +16,7 @@ namespace SimulatedExchange.Infrastructure.Bus
 
         public async Task PublishAsync<TEvent>(TEvent @event) where TEvent : Event
         {
-            var handlers = handlerFactory.GetHandlers(@event);
-            foreach (var handler in handlers)
-            {
-                await handler.Handle(@event).ConfigureAwait(false);
-            }
+            await PublishEventAsync(Converter.ChangeType(@event, @event.GetType()));
         }
 
         public async Task PublishAsync<TEvent>(IEnumerable<TEvent> events) where TEvent : Event
@@ -28,6 +24,15 @@ namespace SimulatedExchange.Infrastructure.Bus
             foreach (var @event in events)
             {
                 await PublishAsync(@event).ConfigureAwait(false);
+            }
+        }
+
+        private async Task PublishEventAsync<TEvent>(TEvent @event) where TEvent : Event
+        {
+            var handlers = handlerFactory.GetHandlers<TEvent>();
+            foreach (var handler in handlers)
+            {
+                await handler.Handle(@event).ConfigureAwait(false);
             }
         }
     }

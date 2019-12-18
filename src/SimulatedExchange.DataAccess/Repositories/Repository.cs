@@ -67,7 +67,7 @@ namespace SimulatedExchange.DataAccess.Repositories
             {
                 using (await @lock.LockAsync())
                 {
-                    if (aggregateRoot.Version != -1)
+                    if (aggregateRoot.Version > 0)
                     {
                         var item = await GetByIdAsync(aggregateRoot.Id);
                         if (item.Version != aggregateRoot.Version)

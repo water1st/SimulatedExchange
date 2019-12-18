@@ -19,6 +19,8 @@ namespace SimulatedExchange.Api.Mapper
                     Price = data.Price,
                     Status = data.Status
                 };
+
+                result.Add(item);
             }
 
             return result;

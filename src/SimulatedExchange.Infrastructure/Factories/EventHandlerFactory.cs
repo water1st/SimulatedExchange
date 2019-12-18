@@ -1,8 +1,7 @@
-﻿using SimulatedExchange.Events;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SimulatedExchange.Events;
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
 
 namespace SimulatedExchange.Infrastructure.Factories
 {
@@ -15,10 +14,9 @@ namespace SimulatedExchange.Infrastructure.Factories
             this.provider = provider;
         }
 
-        public IEnumerable<IEventHandler<TEvent>> GetHandlers<TEvent>(TEvent @event) where TEvent : Event
+        public IEnumerable<IEventHandler<TEvent>> GetHandlers<TEvent>() where TEvent : Event
         {
-            var type = typeof(IEventHandler<>).MakeGenericType(@event.GetType());
-            return provider.GetServices(type).Select(handler => (IEventHandler<TEvent>)handler);
+            return provider.GetServices<IEventHandler<TEvent>>();
         }
     }
 }
