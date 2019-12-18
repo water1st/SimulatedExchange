@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -29,6 +29,12 @@
     <ProjectReference Include="..\SimulatedExchange.Domain\SimulatedExchange.Domain.csproj" />
     <ProjectReference Include="..\SimulatedExchange.Infrastructure\SimulatedExchange.Infrastructure.csproj" />
     <ProjectReference Include="..\SimulatedExchange.Queries\SimulatedExchange.Queries.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

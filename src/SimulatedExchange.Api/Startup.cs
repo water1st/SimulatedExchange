@@ -34,7 +34,7 @@ namespace SimulatedExchange.Api
                 options.Filters.Add<ExceptionFilter>();
             });
 
-            services.AddSignalRCore();
+            services.AddSignalR();
 
             services.AddApi();
             services.AddApplicationLayout();
