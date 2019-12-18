@@ -1,4 +1,5 @@
-﻿using SimulatedExchange.Events;
+﻿using SimulatedExchange.Domain.Exceptions;
+using SimulatedExchange.Events;
 using System;
 
 namespace SimulatedExchange.Domain.Orders
@@ -24,8 +25,24 @@ namespace SimulatedExchange.Domain.Orders
         //订单状态
         public OrderStatus Status { get; private set; }
 
+        private void CheckOrder()
+        {
+            if (Status == OrderStatus.Canceled || Status == OrderStatus.Canceling)
+            {
+                throw new OrderIsCanceledException("订单已被取消");
+            }
+            if (Status == OrderStatus.FullTransaction)
+            {
+                throw new OrderIsFullTranscationException("订单已完全成交");
+            }
+        }
+
         public void PlaceOrder(OrderInfo orderInfo)
         {
+            if (Status != OrderStatus.Opened)
+            {
+                throw new OrderIsExistExcetpion("订单已存在");
+            }
             var @event = new NewOrderEvent
             {
                 AggregateId = Id,
@@ -40,12 +57,16 @@ namespace SimulatedExchange.Domain.Orders
 
         public void Cancel()
         {
+            CheckOrder();
+
             var @event = new CancelOrderEvent { AggregateId = Id };
             ApplyEvent(@event);
         }
 
         public void Deal(TransactionInfo info)
         {
+            CheckOrder();
+
             var volume = Volume + info.Amount;
             var @event = new TransactionEvent { AggregateId = Id, Amount = volume, Price = info.Price };
 
