@@ -19,7 +19,9 @@ namespace SimulatedExchange.Api.Controllers
             this.orderService = orderService;
             this.orderMapper = orderMapper;
         }
-
+        /// <summary>
+        /// 获取订单列表
+        /// </summary>
         [HttpGet]
         [Route("")]
         public async Task<GerOrderListResponse> GetList([FromQuery]GetOrderListRequest request)
@@ -29,7 +31,9 @@ namespace SimulatedExchange.Api.Controllers
 
             return result;
         }
-
+        /// <summary>
+        /// 下单
+        /// </summary>
         [HttpPost]
         [Route("")]
         public async Task NewOrder([FromBody]NewOrderRequest request)
@@ -41,14 +45,18 @@ namespace SimulatedExchange.Api.Controllers
                 Price = request.Price
             });
         }
-
+        /// <summary>
+        /// 成交
+        /// </summary>
         [HttpPut]
         [Route("{id}/deal")]
         public async Task Deal([FromRoute]string id, [FromBody]OrderDealRequest request)
         {
             await orderService.TransactionAsync(id, request.Amount, request.Price);
         }
-
+        /// <summary>
+        /// 撤单
+        /// </summary>
         [HttpPut]
         [Route("{id}/cancel")]
         public async Task Cancel([FromRoute]string id)

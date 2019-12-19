@@ -13,6 +13,11 @@ using SimulatedExchange.DataAccess;
 using SimulatedExchange.Domain;
 using SimulatedExchange.Infrastructure;
 using SimulatedExchange.Queries;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
+using System.IO;
+using System;
+using System.Reflection;
 
 namespace SimulatedExchange.Api
 {
@@ -54,6 +59,12 @@ namespace SimulatedExchange.Api
                 builder.AddSerilog(logger);
             });
 
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Simulated Exchange Api", Version = "v1" });
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +85,12 @@ namespace SimulatedExchange.Api
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<TradeReportHub>("api/TRADE_REPORT_CHANNEL");
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Simulated Exchange Api");
             });
 
 

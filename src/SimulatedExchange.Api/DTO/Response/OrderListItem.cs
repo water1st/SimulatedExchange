@@ -2,16 +2,29 @@
 {
     public class OrderListItem
     {
+        /// <summary>
+        /// 订单编号
+        /// </summary>
         public string Id { get; set; }
-        //币对
+        /// <summary>
+        /// 币对：usdt-btc
+        /// </summary>
         public string PairSymbols { get; set; }
-        //委托价格 
+        /// <summary>
+        /// 委托价格
+        /// </summary>
         public decimal Price { get; set; }
-        //委托总量
+        /// <summary>
+        /// 委托总量
+        /// </summary>
         public decimal TotalAmount { get; set; }
-        //成交量
+        /// <summary>
+        /// 成交量
+        /// </summary>
         public decimal Volume { get; set; }
-        //订单状态
+        /// <summary>
+        /// 订单状态
+        /// </summary>
         public int Status { get; set; }
     }
 }

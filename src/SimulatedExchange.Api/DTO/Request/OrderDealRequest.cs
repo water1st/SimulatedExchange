@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SimulatedExchange.Api.DTO
+﻿namespace SimulatedExchange.Api.DTO
 {
     public class OrderDealRequest
     {
+        /// <summary>
+        /// 价格
+        /// </summary>
         public decimal Price { get; set; }
+        /// <summary>
+        /// 数量
+        /// </summary>
         public decimal Amount { get; set; }
     }
 }
