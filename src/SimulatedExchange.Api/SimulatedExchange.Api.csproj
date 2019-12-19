@@ -11,6 +11,10 @@
     <DocumentationFile>C:\Users\water\source\repos\SimulatedExchange\src\SimulatedExchange.Api\SimulatedExchange.Api.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\water\source\repos\SimulatedExchange\src\SimulatedExchange.Api\SimulatedExchange.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
