@@ -44,7 +44,8 @@ namespace SimulatedExchange.Applications.Mapper
                 PairSymbols = listItem.PairSymbols,
                 Price = listItem.Price,
                 Status = listItem.Status,
-                Type = listItem.Type
+                Type = listItem.Type,
+                Volume = listItem.Volume
             };
 
             return result;

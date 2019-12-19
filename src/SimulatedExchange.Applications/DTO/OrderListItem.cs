@@ -15,5 +15,8 @@
         public int Type { get; set; }
         //订单状态
         public int Status { get; set; }
+        //成交量
+        public decimal Volume { get; set; }
+
     }
 }

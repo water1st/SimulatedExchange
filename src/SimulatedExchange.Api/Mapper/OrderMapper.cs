@@ -17,7 +17,8 @@ namespace SimulatedExchange.Api.Mapper
                     Id = data.Id,
                     PairSymbols = data.PairSymbols,
                     Price = data.Price,
-                    Status = data.Status
+                    Status = data.Status,
+                    Volume = data.Volume
                 };
 
                 result.Add(item);
