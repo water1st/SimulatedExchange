@@ -9,7 +9,6 @@ namespace SimulatedExchange.Applications.Services
         Task<OrderDetial> GetIdAsync(string id);
         Task<OrderList> GetList(int pageIndex, int PageSize);
         Task CreateNewOrder(OrderInfo orderInfo);
-        Task TransactionAsync(string id, decimal amount, decimal price);
         Task CalcelOrderAsync(string id);
     }
 }

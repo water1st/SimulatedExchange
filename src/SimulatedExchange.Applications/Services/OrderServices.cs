@@ -60,13 +60,5 @@ namespace SimulatedExchange.Applications.Services
 
             return mapper.Map(result);
         }
-
-        public async Task TransactionAsync(string id, decimal amount, decimal price)
-        {
-            var command = new OrderTransactionCommand(Guid.Parse(id), price, amount);
-
-            await commandBus.SendAsync(command);
-
-        }
     }
 }

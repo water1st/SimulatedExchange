@@ -18,6 +18,7 @@ namespace SimulatedExchange.Applications
         private static void AddApplicationServices(IServiceCollection services)
         {
             services.AddTransient<IOrderServices, OrderServices>();
+            services.AddTransient<ITestServices, TestServices>();
         }
 
         private static void AddMapper(IServiceCollection services)
