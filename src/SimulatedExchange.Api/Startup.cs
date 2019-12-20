@@ -23,6 +23,7 @@ namespace SimulatedExchange.Api
 {
     public class Startup
     {
+        private const string CORS_POLICY = "Default";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -65,6 +66,14 @@ namespace SimulatedExchange.Api
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
             });
 
+            services.AddCors(corsOptions =>
+            {
+                corsOptions.AddPolicy(CORS_POLICY, policyOptions =>
+                {
+                    policyOptions.SetIsOriginAllowed(origin => true);
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +83,8 @@ namespace SimulatedExchange.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(CORS_POLICY);
 
             app.UseHttpsRedirection();
 
