@@ -46,15 +46,6 @@ namespace SimulatedExchange.Api.Controllers
             });
         }
         /// <summary>
-        /// 成交
-        /// </summary>
-        [HttpPut]
-        [Route("{id}/deal")]
-        public async Task Deal([FromRoute]string id, [FromBody]OrderDealRequest request)
-        {
-            await orderService.TransactionAsync(id, request.Amount, request.Price);
-        }
-        /// <summary>
         /// 撤单
         /// </summary>
         [HttpPut]
