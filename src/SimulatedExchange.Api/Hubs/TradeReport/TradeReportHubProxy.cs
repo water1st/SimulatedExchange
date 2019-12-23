@@ -24,9 +24,9 @@ namespace SimulatedExchange.Api.Hubs
             await SendMessage("New", message.State);
         }
 
-        public async Task Handle(PartialCanceledMessage message)
+        public async Task Handle(PartialTransactionMessage message)
         {
-            await SendMessage("PartialCancel", message.State);
+            await SendMessage("PartialDeal", message.State);
         }
 
         public async Task Handle(FullTransactionMessage message)
@@ -34,9 +34,9 @@ namespace SimulatedExchange.Api.Hubs
             await SendMessage("FullDeal", message.State);
         }
 
-        public async Task Handle(PartialTransactionMessage message)
+        public async Task Handle(PartialCanceledMessage message)
         {
-            await SendMessage("PartialDeal", message.State);
+            await SendMessage("PartialCancel", message.State);
         }
 
         public async Task Handle(FullCanceledMessage message)
