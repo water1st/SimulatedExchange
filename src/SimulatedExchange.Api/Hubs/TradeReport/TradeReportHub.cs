@@ -2,5 +2,5 @@
 
 namespace SimulatedExchange.Api.Hubs
 {
-    public class TradeReportHub : Hub<ITradeReportHub> { }
+    public class TradeReportHub : Hub { }
 }

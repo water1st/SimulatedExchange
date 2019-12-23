@@ -1,5 +1,6 @@
 ﻿using SimulatedExchange.Bus;
 using SimulatedExchange.Events;
+using System;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Domain.Orders
@@ -9,36 +10,48 @@ namespace SimulatedExchange.Domain.Orders
         IEventHandler<TransactionEvent>
     {
         private readonly IMessageBus messageBus;
-        public OrderReportMessageService(IMessageBus messageBus)
+        private readonly IRepository<Order> repository;
+
+        public OrderReportMessageService(IMessageBus messageBus, IRepository<Order> repository)
         {
             this.messageBus = messageBus;
+            this.repository = repository;
         }
 
         public async Task Handle(CancelOrderEvent @event)
         {
-            await Handle(@event as OrderEvent);
+            var state = await GetState(@event.AggregateId);
+            await messageBus.SendAsync(new CancelOrderMessage { State = state });
         }
 
         public async Task Handle(NewOrderEvent @event)
         {
-            await Handle(@event as OrderEvent);
+            var state = await GetState(@event.AggregateId);
+            await messageBus.SendAsync(new NewOrderMessage { State = state });
         }
 
         public async Task Handle(TransactionEvent @event)
         {
-            await Handle(@event as OrderEvent);
+            var state = await GetState(@event.AggregateId);
+            await messageBus.SendAsync(new DealOrderMessage { State = state });
         }
 
-        private async Task Handle(OrderEvent @event)
+        private async Task<OrderState> GetState(Guid id)
         {
-            var message = new OrderReportMessage();
+            var order = await repository.GetByIdAsync(id);
+            var result = new OrderState();
 
-            message.Id = @event.AggregateId.ToString();
-            message.Status = (int)@event.Status;
-            message.Datetime = @event.DateTime.ToUnixTimeSeconds();
+            result.Id = id.ToString();
+            result.PairSymbols = order.PairSymbols.ToString();
+            result.Price = order.Price;
+            result.Status = (int)order.Status;
+            result.TotalAmount = order.TotalAmount;
+            result.Type = (int)order.Type;
+            result.Volume = (int)order.Volume;
 
-            await messageBus.SendAsync(message);
+            return result;
         }
+
 
     }
 }

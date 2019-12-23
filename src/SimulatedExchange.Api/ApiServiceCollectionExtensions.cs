@@ -17,7 +17,9 @@ namespace SimulatedExchange.Api
 
         private static void AddMessageHandler(IServiceCollection services)
         {
-            services.AddTransient<IMessageHandler<OrderReportMessage>, TradeReportHubProxy>();
+            services.AddTransient<IMessageHandler<NewOrderMessage>, TradeReportHubProxy>();
+            services.AddTransient<IMessageHandler<CancelOrderMessage>, TradeReportHubProxy>();
+            services.AddTransient<IMessageHandler<DealOrderMessage>, TradeReportHubProxy>();
         }
 
         private static void AddMapper(IServiceCollection services)
