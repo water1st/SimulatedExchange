@@ -42,7 +42,8 @@ namespace SimulatedExchange.Api.Controllers
             {
                 Amount = request.Amount,
                 PairSymbols = request.PairSymbols,
-                Price = request.Price
+                Price = request.Price,
+                ClientId = request.ClientId
             });
         }
         /// <summary>

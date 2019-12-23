@@ -6,6 +6,7 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
     {
         private class OrderDetial : IOrderDetial, IOrderListItem
         {
+            public string ClientId { get; set; }
             public string Id { get; set; }
             //币对
             public string PairSymbols { get; set; }

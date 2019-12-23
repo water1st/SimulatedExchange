@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 18/12/2019 16:09:45
+ Date: 23/12/2019 15:23:17
 */
 
 SET NAMES utf8mb4;
@@ -23,6 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders`  (
   `Id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ClientId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `FromCurrencySymbol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `ToCurrencySymbol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `Price` decimal(10, 0) NULL DEFAULT NULL,
@@ -33,7 +34,8 @@ CREATE TABLE `orders`  (
   `Status` int(11) NULL DEFAULT NULL,
   `CreatedTimeUtc` datetime(0) NULL DEFAULT NULL,
   `ModifyedTimeUtc` datetime(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`Id`) USING BTREE
+  PRIMARY KEY (`Id`) USING BTREE,
+  UNIQUE INDEX `ORDER_CLIENTID_UNIQUE_INDEX`(`ClientId`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

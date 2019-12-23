@@ -5,6 +5,8 @@ namespace SimulatedExchange.Domain.Orders
     public class AddOrderTransaction
     {
         public string Id { get; set; }
+        //客户端id
+        public string ClientId { get; set; }
         //币对
         public string Symbols { get; set; }
         //委托价格

@@ -21,7 +21,9 @@ namespace SimulatedExchange.Commands.Handlers
                 Amount = command.Amount,
                 Exchange = (Exchange)command.Exchange,
                 Price = command.Price,
-                Symbols = command.Symbols
+                Symbols = command.Symbols,
+                ClientId = command.ClientId
+
             }).ConfigureAwait(false);
         }
     }

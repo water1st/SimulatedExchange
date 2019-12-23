@@ -9,7 +9,8 @@ namespace SimulatedExchange.Domain.Orders
         IAggregateRootEventHandler<CancelOrderEvent>,
         IAggregateRootEventHandler<TransactionEvent>
     {
-
+        //客户端id
+        public string ClientId { get; set; }
         //币对
         public PairSymbols PairSymbols { get; private set; }
         //委托价格 
@@ -33,6 +34,7 @@ namespace SimulatedExchange.Domain.Orders
             }
             var @event = new NewOrderEvent
             {
+                ClientId = orderInfo.ClientId,
                 AggregateId = Id,
                 Symbols = orderInfo.Symbols,
                 Price = orderInfo.Price,
@@ -84,8 +86,13 @@ namespace SimulatedExchange.Domain.Orders
             }
 
             var volume = Volume + info.Amount;
-            var @event = new TransactionEvent { AggregateId = Id, 
-                Amount = volume, Price = info.Price, DateTime = DateTimeOffset.UtcNow };
+            var @event = new TransactionEvent
+            {
+                AggregateId = Id,
+                Amount = volume,
+                Price = info.Price,
+                DateTime = DateTimeOffset.UtcNow
+            };
 
             if (volume > TotalAmount)
             {

@@ -17,6 +17,7 @@ namespace SimulatedExchange.Domain.Orders
         public async Task Handle(NewOrderEvent @event)
         {
             var transaction = new AddOrderTransaction();
+            transaction.ClientId = @event.ClientId;
             transaction.Amount = @event.Amount;
             transaction.Exchange = (int)@event.Exchange;
             transaction.Id = @event.AggregateId.ToString();

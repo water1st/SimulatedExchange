@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SimulatedExchange.Applications.Mapper;
 using SimulatedExchange.Applications.Services;
+using SimulatedExchange.Applications.Validators;
 
 namespace SimulatedExchange.Applications
 {
@@ -11,7 +12,7 @@ namespace SimulatedExchange.Applications
 
             AddApplicationServices(services);
             AddMapper(services);
-
+            AddValidator(services);
             return services;
         }
 
@@ -25,5 +26,11 @@ namespace SimulatedExchange.Applications
         {
             services.AddTransient<IOrderServiceMapper, OrderServiceMapper>();
         }
+
+        private static void AddValidator(IServiceCollection services)
+        {
+            services.AddTransient<IOrderValidator, OrderValidator>();
+        }
+
     }
 }

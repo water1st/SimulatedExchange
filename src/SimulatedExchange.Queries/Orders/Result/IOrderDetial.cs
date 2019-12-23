@@ -5,6 +5,7 @@ namespace SimulatedExchange.Queries.Orders
     public interface IOrderDetial
     {
         string Id { get; set; }
+        string ClientId { get; set; }
         //币对
         string PairSymbols { get; set; }
         //委托价格 

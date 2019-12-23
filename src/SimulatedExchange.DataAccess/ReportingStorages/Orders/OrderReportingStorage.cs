@@ -63,7 +63,7 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
         public async Task Write(AddOrderTransaction parameter)
         {
             var symbols = parameter.Symbols.Split('-');
-            const string INSERT_SQL = "INSERT INTO orders (Id,FromCurrencySymbol,ToCurrencySymbol,Price,Volume,TotalAmount,Type,Status,Exchange,CreatedTimeUtc) VALUES (@Id,@FromCurrencySymbol,@ToCurrencySymbol,@Price,@Volume,@TotalAmount,@Type,@Status,@Exchange,@CreatedTimeUtc)";
+            const string INSERT_SQL = "INSERT INTO orders (Id,ClientId,FromCurrencySymbol,ToCurrencySymbol,Price,Volume,TotalAmount,Type,Status,Exchange,CreatedTimeUtc) VALUES (@Id,@ClientId,@FromCurrencySymbol,@ToCurrencySymbol,@Price,@Volume,@TotalAmount,@Type,@Status,@Exchange,@CreatedTimeUtc)";
             await ExecuteSQLAsync(INSERT_SQL, new PersistentObject
             {
                 Id = parameter.Id,
@@ -75,6 +75,7 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
                 Exchange = parameter.Exchange,
                 Type = parameter.Type,
                 Status = 0,
+                ClientId = parameter.ClientId,
                 CreatedTimeUtc = parameter.DateTime
             });
         }
@@ -139,6 +140,7 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
             result.TotalAmount = @object.TotalAmount;
             result.Type = @object.Type;
             result.Volume = @object.Volume;
+            result.ClientId = @object.ClientId;
 
             return result;
         }
