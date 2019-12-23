@@ -7,8 +7,10 @@ namespace SimulatedExchange.Api.Hubs
 {
     public class TradeReportHubProxy :
         IMessageHandler<NewOrderMessage>,
-        IMessageHandler<CancelOrderMessage>,
-        IMessageHandler<DealOrderMessage>
+        IMessageHandler<PartialCanceledMessage>,
+        IMessageHandler<FullCanceledMessage>,
+        IMessageHandler<FullTransactionMessage>,
+        IMessageHandler<PartialTransactionMessage>
     {
         private readonly IHubContext<TradeReportHub> hub;
 
@@ -22,14 +24,24 @@ namespace SimulatedExchange.Api.Hubs
             await SendMessage("New", message.State);
         }
 
-        public async Task Handle(CancelOrderMessage message)
+        public async Task Handle(PartialCanceledMessage message)
         {
-            await SendMessage("Cancel", message.State);
+            await SendMessage("PartialCancel", message.State);
         }
 
-        public async Task Handle(DealOrderMessage message)
+        public async Task Handle(FullTransactionMessage message)
         {
-            await SendMessage("Deal", message.State);
+            await SendMessage("FullDeal", message.State);
+        }
+
+        public async Task Handle(PartialTransactionMessage message)
+        {
+            await SendMessage("PartialDeal", message.State);
+        }
+
+        public async Task Handle(FullCanceledMessage message)
+        {
+            await SendMessage("FullCanceled", message.State);
         }
 
         private async Task SendMessage(string eventName, OrderState state)

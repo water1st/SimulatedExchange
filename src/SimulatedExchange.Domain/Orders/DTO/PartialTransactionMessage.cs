@@ -2,7 +2,7 @@
 
 namespace SimulatedExchange.Domain.Orders
 {
-    public class CancelOrderMessage : IMessage
+    public class PartialTransactionMessage : IMessage
     {
         public OrderState State { get; set; }
     }

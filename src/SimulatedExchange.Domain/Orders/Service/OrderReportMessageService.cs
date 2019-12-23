@@ -21,7 +21,7 @@ namespace SimulatedExchange.Domain.Orders
         public async Task Handle(CancelOrderEvent @event)
         {
             var state = await GetState(@event.AggregateId);
-            await messageBus.SendAsync(new CancelOrderMessage { State = state });
+            await messageBus.SendAsync(new PartialCanceledMessage { State = state });
         }
 
         public async Task Handle(NewOrderEvent @event)
@@ -33,7 +33,7 @@ namespace SimulatedExchange.Domain.Orders
         public async Task Handle(TransactionEvent @event)
         {
             var state = await GetState(@event.AggregateId);
-            await messageBus.SendAsync(new DealOrderMessage { State = state });
+            await messageBus.SendAsync(new FullTransactionMessage { State = state });
         }
 
         private async Task<OrderState> GetState(Guid id)
