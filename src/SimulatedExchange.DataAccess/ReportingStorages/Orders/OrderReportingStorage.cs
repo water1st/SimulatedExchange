@@ -75,7 +75,7 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
                 Exchange = parameter.Exchange,
                 Type = parameter.Type,
                 Status = 0,
-                CreatedTimeUtc = DateTime.UtcNow,
+                CreatedTimeUtc = parameter.DateTime
             });
         }
 
@@ -87,7 +87,7 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
             {
                 Id = parameter.Id.ToString(),
                 Status = (int)parameter.Status,
-                ModifyedTimeUtc = DateTime.UtcNow
+                ModifyedTimeUtc = parameter.DateTime
             });
         }
 
@@ -100,7 +100,7 @@ namespace SimulatedExchange.DataAccess.ReportingStorages.Orders
                 Id = parameter.Id.ToString(),
                 Status = (int)parameter.Status,
                 Volume = parameter.Volume,
-                ModifyedTimeUtc = DateTime.UtcNow
+                ModifyedTimeUtc = parameter.DateTime
             });
         }
 

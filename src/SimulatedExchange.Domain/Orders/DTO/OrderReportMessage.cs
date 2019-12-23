@@ -6,5 +6,6 @@ namespace SimulatedExchange.Domain.Orders
     {
         public string Id { get; set; }
         public int Status { get; set; }
+        public long Datetime { get; set; }
     }
 }

@@ -11,6 +11,8 @@
         //撤单中
         Canceling = 3,
         //已撤单
-        Canceled = 4
+        FullCanceled = 4,
+        //部分撤单
+        PartialCanceled = 5
     }
 }

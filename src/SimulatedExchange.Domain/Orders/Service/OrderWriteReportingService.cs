@@ -23,6 +23,7 @@ namespace SimulatedExchange.Domain.Orders
             transaction.Price = @event.Price;
             transaction.Symbols = @event.Symbols.ToString();
             transaction.Type = (int)@event.Type;
+            transaction.DateTime = @event.DateTime.DateTime;
 
             await repotingBus.Write(transaction);
         }
@@ -32,7 +33,8 @@ namespace SimulatedExchange.Domain.Orders
             var transaction = new UpdateOrderStatusTransaction();
 
             transaction.Id = @event.AggregateId.ToString();
-            transaction.Status = OrderStatus.Canceled;
+            transaction.Status = @event.Status;
+            transaction.DateTime = @event.DateTime.DateTime;
 
             await repotingBus.Write(transaction);
         }
@@ -41,9 +43,10 @@ namespace SimulatedExchange.Domain.Orders
         {
             var transaction = new UpdateOrderTransaction();
 
-            transaction.Status = @event.OrderStatus;
+            transaction.Status = @event.Status;
             transaction.Volume = @event.Amount;
             transaction.Id = @event.AggregateId.ToString();
+            transaction.DateTime = @event.DateTime.DateTime;
 
             await repotingBus.Write(transaction);
         }

@@ -15,5 +15,7 @@ namespace SimulatedExchange.Domain.Orders
         public int Exchange { get; set; }
         //订单类型
         public int Type { get; set; }
+        //订单时间
+        public DateTime DateTime { get; set; }
     }
 }

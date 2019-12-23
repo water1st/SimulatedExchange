@@ -1,11 +1,6 @@
-﻿using SimulatedExchange.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SimulatedExchange.Domain.Orders
+﻿namespace SimulatedExchange.Domain.Orders
 {
-    public class CancelOrderEvent : Event
+    public class CancelOrderEvent : OrderEvent
     {
     }
 }

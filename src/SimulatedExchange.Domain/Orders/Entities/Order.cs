@@ -38,14 +38,17 @@ namespace SimulatedExchange.Domain.Orders
                 Price = orderInfo.Price,
                 Amount = orderInfo.Amount,
                 Exchange = orderInfo.Exchange,
-                Type = OrderType.Limit
+                Type = OrderType.Limit,
+                DateTime = DateTimeOffset.UtcNow
             };
             ApplyEvent(@event);
         }
 
         public void Cancel()
         {
-            if (Status == OrderStatus.Canceled || Status == OrderStatus.Canceling)
+            if (Status == OrderStatus.FullCanceled
+                || Status == OrderStatus.PartialCanceled
+                || Status == OrderStatus.Canceling)
             {
                 throw new OrderIsCanceledException("订单已被取消");
             }
@@ -53,17 +56,25 @@ namespace SimulatedExchange.Domain.Orders
             {
                 throw new OrderHasBeenDealException("订单已完全成交");
             }
+
+            var @event = new CancelOrderEvent { AggregateId = Id, DateTime = DateTimeOffset.UtcNow };
             if (Status == OrderStatus.PartialTransaction)
             {
-                throw new OrderHasBeenDealException("订单已部分成交");
+                @event.Status = OrderStatus.PartialCanceled;
             }
-            var @event = new CancelOrderEvent { AggregateId = Id };
+            else
+            {
+                @event.Status = OrderStatus.FullCanceled;
+            }
+
             ApplyEvent(@event);
         }
 
         public void Deal(TransactionInfo info)
         {
-            if (Status == OrderStatus.Canceled || Status == OrderStatus.Canceling)
+            if (Status == OrderStatus.FullCanceled
+                || Status == OrderStatus.PartialCanceled
+                || Status == OrderStatus.Canceling)
             {
                 throw new OrderIsCanceledException("订单已被取消");
             }
@@ -73,7 +84,8 @@ namespace SimulatedExchange.Domain.Orders
             }
 
             var volume = Volume + info.Amount;
-            var @event = new TransactionEvent { AggregateId = Id, Amount = volume, Price = info.Price };
+            var @event = new TransactionEvent { AggregateId = Id, 
+                Amount = volume, Price = info.Price, DateTime = DateTimeOffset.UtcNow };
 
             if (volume > TotalAmount)
             {
@@ -81,11 +93,11 @@ namespace SimulatedExchange.Domain.Orders
             }
             else if (volume == TotalAmount)
             {
-                @event.OrderStatus = OrderStatus.FullTransaction;
+                @event.Status = OrderStatus.FullTransaction;
             }
             else
             {
-                @event.OrderStatus = OrderStatus.PartialTransaction;
+                @event.Status = OrderStatus.PartialTransaction;
             }
 
             ApplyEvent(@event);
@@ -134,14 +146,14 @@ namespace SimulatedExchange.Domain.Orders
 
         public void Handle(CancelOrderEvent @event)
         {
-            Status = OrderStatus.Canceled;
+            Status = @event.Status;
         }
 
         public void Handle(TransactionEvent @event)
         {
             Price = @event.Price;
             Volume = @event.Amount;
-            Status = @event.OrderStatus;
+            Status = @event.Status;
         }
     }
 }

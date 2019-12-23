@@ -1,10 +1,12 @@
-﻿using SimulatedExchange.Events;
-using System;
-
-namespace SimulatedExchange.Domain.Orders
+﻿namespace SimulatedExchange.Domain.Orders
 {
-    public class NewOrderEvent : Event
+    public class NewOrderEvent: OrderEvent
     {
+        public NewOrderEvent()
+        {
+            Status = OrderStatus.Opened;
+        }
+
         //币对
         public PairSymbols Symbols { get; set; }
         //委托价格

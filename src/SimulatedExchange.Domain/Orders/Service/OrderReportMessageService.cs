@@ -16,30 +16,26 @@ namespace SimulatedExchange.Domain.Orders
 
         public async Task Handle(CancelOrderEvent @event)
         {
-            var message = new OrderReportMessage();
-
-            message.Id = @event.AggregateId.ToString();
-            message.Status = (int)OrderStatus.Canceled;
-
-            await messageBus.SendAsync(message);
+            await Handle(@event as OrderEvent);
         }
 
         public async Task Handle(NewOrderEvent @event)
         {
-            var message = new OrderReportMessage();
-
-            message.Id = @event.AggregateId.ToString();
-            message.Status = (int)OrderStatus.Opened;
-
-            await messageBus.SendAsync(message);
+            await Handle(@event as OrderEvent);
         }
 
         public async Task Handle(TransactionEvent @event)
         {
+            await Handle(@event as OrderEvent);
+        }
+
+        private async Task Handle(OrderEvent @event)
+        {
             var message = new OrderReportMessage();
 
             message.Id = @event.AggregateId.ToString();
-            message.Status = (int)@event.OrderStatus;
+            message.Status = (int)@event.Status;
+            message.Datetime = @event.DateTime.ToUnixTimeSeconds();
 
             await messageBus.SendAsync(message);
         }

@@ -1,11 +1,8 @@
-﻿using SimulatedExchange.Events;
-
-namespace SimulatedExchange.Domain.Orders
+﻿namespace SimulatedExchange.Domain.Orders
 {
-    public class TransactionEvent : Event
+    public class TransactionEvent : OrderEvent
     {
         public decimal Price { get; set; }
         public decimal Amount { get; set; }
-        public OrderStatus OrderStatus { get; set; }
     }
 }
