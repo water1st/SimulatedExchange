@@ -49,7 +49,7 @@ namespace SimulatedExchange.Api
             services.AddDomain();
             services.AddClientAdapterCore();
             services.AddDataAccessCore();
-            if (Environment.GetEnvironmentVariable("TEST").ToUpper() == "TRUE")
+            if (Environment.GetEnvironmentVariable("RUN_AT_LOCAL")?.ToUpper() == "TRUE")
             {
                 services.AddMemoryProvider();
             }

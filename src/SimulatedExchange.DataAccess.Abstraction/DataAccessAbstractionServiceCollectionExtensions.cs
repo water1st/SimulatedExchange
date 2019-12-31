@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace SimulatedExchange.DataAccess
 {
@@ -15,6 +17,12 @@ namespace SimulatedExchange.DataAccess
         {
             services.AddSingleton<ITransactionBus, TransactionBus>();
 
+            return services;
+        }
+
+        public static IServiceCollection AddProvider(this IServiceCollection services, Assembly assembly)
+        {
+            services.AddMediatR(assembly);
             return services;
         }
     }

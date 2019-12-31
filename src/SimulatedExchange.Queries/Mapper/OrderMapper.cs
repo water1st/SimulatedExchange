@@ -1,6 +1,6 @@
 ﻿using SimulatedExchange.DataAccess.ReportingTransaction;
 using SimulatedExchange.Queries.Orders;
-using System;
+using static SimulatedExchange.DataAccess.ReportingTransaction.GetOrdersTransactionResult;
 
 namespace SimulatedExchange.Queries.Mapper
 {
@@ -8,12 +8,61 @@ namespace SimulatedExchange.Queries.Mapper
     {
         public GetOrderQueryResult MapToGetOrderQueryResult(GetOrderTransactionResult item)
         {
-            throw new NotImplementedException();
+            var result = new GetOrderQueryResult
+            {
+                ClientId = item.ClientId,
+                Exchange = item.Exchange,
+                Id = item.Id,
+                PairSymbols = item.PairSymbols,
+                Price = item.Price,
+                Status = item.Status,
+                TotalAmount = item.TotalAmount,
+                Type = item.Type,
+                Volume = item.Volume
+            };
+
+            return result;
         }
 
         public GetOrdersQueryResult MapToGetOrdersQueryResult(GetOrdersTransactionResult items)
         {
-            throw new NotImplementedException();
+            var result = new GetOrdersQueryResult();
+            foreach (var item in items)
+            {
+                var data = MaotpGetOrdersQueryResultItem(item);
+                result.Add(data);
+            }
+            result.PagingInfo = MapToPagingInfo(items.PagingInfo);
+            return result;
+        }
+
+        private PagingInfo MapToPagingInfo(DataAccess.ReportingTransaction.PagingInfo pagingInfo)
+        {
+            var result = new PagingInfo
+            {
+                CurrentPageIndex = pagingInfo.CurrentPageIndex,
+                PageCount = pagingInfo.PageCount
+            };
+
+            return result;
+        }
+
+        private GetOrdersQueryResultItem MaotpGetOrdersQueryResultItem(GetOrdersTransactionResultItem item)
+        {
+            var result = new GetOrdersQueryResultItem
+            {
+                ClientId = item.ClientId,
+                Exchange = item.Exchange,
+                Id = item.Id,
+                PairSymbols = item.PairSymbols,
+                Price = item.Price,
+                Status = item.Status,
+                TotalAmount = item.TotalAmount,
+                Type = item.Type,
+                Volume = item.Volume
+            };
+
+            return result;
         }
     }
 }

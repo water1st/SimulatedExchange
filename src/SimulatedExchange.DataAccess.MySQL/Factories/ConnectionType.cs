@@ -1,6 +1,6 @@
 ﻿namespace SimulatedExchange.DataAccess
 {
-    internal enum ConnectionType
+    public enum ConnectionType
     {
         Reporting,
         EventSourcing

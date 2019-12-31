@@ -16,9 +16,11 @@ namespace SimulatedExchange.DataAccess
             services.Configure(action);
 
             AddFactory(services);
-            AddReporting(services);
+            //AddReporting(services);
             AddEventSourcing(services);
             AddMapper(services);
+            services.AddProvider(typeof(MySQLDataAccessServiceCollectionExtensions).Assembly);
+
             return services;
         }
 

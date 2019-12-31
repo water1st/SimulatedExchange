@@ -4,7 +4,7 @@ using static SimulatedExchange.DataAccess.ReportingTransaction.GetOrdersTransact
 
 namespace SimulatedExchange.DataAccess.Mapper
 {
-    internal interface IOrderMapper
+    public interface IOrderMapper
     {
         GetOrderTransactionResult MapToGetOrderTransactionResult(PersistentObject persistentObject);
         GetOrdersTransactionResultItem MapToGetOrdersTransactionResultItem(PersistentObject persistentObject);

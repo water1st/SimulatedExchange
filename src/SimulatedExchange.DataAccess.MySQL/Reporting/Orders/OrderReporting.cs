@@ -1,7 +1,9 @@
 ﻿using Dapper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using SimulatedExchange.DataAccess.Mapper;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.DataAccess.ReportingTransaction.Orders
@@ -17,59 +19,14 @@ namespace SimulatedExchange.DataAccess.ReportingTransaction.Orders
         private readonly IOrderMapper mapper;
         private readonly ILogger logger;
 
-        internal OrderReporting(IDbConnectionFactory factory, IOrderMapper mapper, ILogger<OrderReporting> logger)
+        public OrderReporting(IDbConnectionFactory factory, IOrderMapper mapper, ILogger<OrderReporting> logger)
         {
             this.factory = factory;
             this.mapper = mapper;
             this.logger = logger;
         }
 
-        public async Task Handle(AddOrderTransaction transaction)
-        {
-            var symbols = transaction.Symbols.Split('-');
-            const string INSERT_SQL = "INSERT INTO orders (Id,ClientId,FromCurrencySymbol,ToCurrencySymbol,Price,Volume,TotalAmount,Type,Status,Exchange,CreatedTimeUtc) VALUES (@Id,@ClientId,@FromCurrencySymbol,@ToCurrencySymbol,@Price,@Volume,@TotalAmount,@Type,@Status,@Exchange,@CreatedTimeUtc)";
-            await ExecuteSQLAsync(INSERT_SQL, new PersistentObject
-            {
-                Id = transaction.Id,
-                FromCurrencySymbol = symbols[1],
-                ToCurrencySymbol = symbols[0],
-                Price = transaction.Price,
-                Volume = 0,
-                TotalAmount = transaction.Amount,
-                Exchange = transaction.Exchange,
-                Type = transaction.Type,
-                Status = 0,
-                ClientId = transaction.ClientId,
-                CreatedTimeUtc = transaction.DateTime
-            });
-        }
-
-        public async Task Handle(UpdateOrderStatusTransaction transaction)
-        {
-            const string UPDATE_SQL = "UPDATE orders SET Status = @Status,ModifyedTimeUtc = @ModifyedTimeUtc WHERE Id = @Id";
-
-            await ExecuteSQLAsync(UPDATE_SQL, new
-            {
-                Id = transaction.Id.ToString(),
-                Status = transaction.Status,
-                ModifyedTimeUtc = transaction.DateTime
-            });
-        }
-
-        public async Task Handle(UpdateOrderTransaction transaction)
-        {
-            const string UPDATE_SQL = "UPDATE orders SET Volume = @Volume,Status = @Status,ModifyedTimeUtc = @ModifyedTimeUtc WHERE Id = @Id";
-
-            await ExecuteSQLAsync(UPDATE_SQL, new
-            {
-                Id = transaction.Id.ToString(),
-                Status = transaction.Status,
-                Volume = transaction.Volume,
-                ModifyedTimeUtc = transaction.DateTime
-            });
-        }
-
-        public async Task<GetOrdersTransactionResult> Handle(GetOrdersTransaction transaction)
+        public async Task<GetOrdersTransactionResult> Handle(GetOrdersTransaction request, CancellationToken cancellationToken)
         {
             var connection = factory.Create(ConnectionType.Reporting);
 
@@ -81,15 +38,15 @@ namespace SimulatedExchange.DataAccess.ReportingTransaction.Orders
             var take = 0;
             int pageIndex = 1;
             int totalPageCount = 1;
-            if (transaction.PagingOptions != null
-                && transaction.PagingOptions.PageIndex > 0
-                && transaction.PagingOptions.PageSize > 0)
+            if (request.PagingOptions != null
+                && request.PagingOptions.PageIndex > 0
+                && request.PagingOptions.PageSize > 0)
             {
                 selectSQL += PAGING_SQL;
-                offset = (transaction.PagingOptions.PageIndex - 1) * transaction.PagingOptions.PageSize;
-                take = transaction.PagingOptions.PageSize;
-                var count = await connection.QuerySingleAsync<double>(COUNT_SQL, new { pageSize = transaction.PagingOptions.PageSize });
-                pageIndex = transaction.PagingOptions.PageIndex;
+                offset = (request.PagingOptions.PageIndex - 1) * request.PagingOptions.PageSize;
+                take = request.PagingOptions.PageSize;
+                var count = await connection.QuerySingleAsync<double>(COUNT_SQL, new { pageSize = request.PagingOptions.PageSize });
+                pageIndex = request.PagingOptions.PageIndex;
                 totalPageCount = Convert.ToInt32(Math.Ceiling(count));
             }
             var queryResults = await connection.QueryAsync<PersistentObject>(selectSQL, new
@@ -109,12 +66,63 @@ namespace SimulatedExchange.DataAccess.ReportingTransaction.Orders
             return result;
         }
 
-        public async Task<GetOrderTransactionResult> Handle(GetOrderTransaction transaction)
+        public async Task<Unit> Handle(AddOrderTransaction request, CancellationToken cancellationToken)
+        {
+            var symbols = request.Symbols.Split('-');
+            const string INSERT_SQL = "INSERT INTO orders (Id,ClientId,FromCurrencySymbol,ToCurrencySymbol,Price,Volume,TotalAmount,Type,Status,Exchange,CreatedTimeUtc) VALUES (@Id,@ClientId,@FromCurrencySymbol,@ToCurrencySymbol,@Price,@Volume,@TotalAmount,@Type,@Status,@Exchange,@CreatedTimeUtc)";
+            await ExecuteSQLAsync(INSERT_SQL, new PersistentObject
+            {
+                Id = request.Id,
+                FromCurrencySymbol = symbols[1],
+                ToCurrencySymbol = symbols[0],
+                Price = request.Price,
+                Volume = 0,
+                TotalAmount = request.Amount,
+                Exchange = request.Exchange,
+                Type = request.Type,
+                Status = 0,
+                ClientId = request.ClientId,
+                CreatedTimeUtc = request.DateTime
+            });
+
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(UpdateOrderStatusTransaction request, CancellationToken cancellationToken)
+        {
+            const string UPDATE_SQL = "UPDATE orders SET Status = @Status,ModifyedTimeUtc = @ModifyedTimeUtc WHERE Id = @Id";
+
+            await ExecuteSQLAsync(UPDATE_SQL, new
+            {
+                Id = request.Id.ToString(),
+                Status = request.Status,
+                ModifyedTimeUtc = request.DateTime
+            });
+
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(UpdateOrderTransaction request, CancellationToken cancellationToken)
+        {
+            const string UPDATE_SQL = "UPDATE orders SET Volume = @Volume,Status = @Status,ModifyedTimeUtc = @ModifyedTimeUtc WHERE Id = @Id";
+
+            await ExecuteSQLAsync(UPDATE_SQL, new
+            {
+                Id = request.Id.ToString(),
+                Status = request.Status,
+                Volume = request.Volume,
+                ModifyedTimeUtc = request.DateTime
+            });
+
+            return Unit.Value;
+        }
+
+        public async Task<GetOrderTransactionResult> Handle(GetOrderTransaction request, CancellationToken cancellationToken)
         {
             const string SELECT_SQL = "SELECT * FROM orders WHERE Id = @id";
 
             var connection = factory.Create(ConnectionType.Reporting);
-            var data = await connection.QueryFirstOrDefaultAsync<PersistentObject>(SELECT_SQL, new { id = transaction.Id.ToString() });
+            var data = await connection.QueryFirstOrDefaultAsync<PersistentObject>(SELECT_SQL, new { id = request.Id.ToString() });
             var result = mapper.MapToGetOrderTransactionResult(data);
 
             return result;

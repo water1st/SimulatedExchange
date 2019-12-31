@@ -3,6 +3,7 @@ using SimulatedExchange.DataAccess.ReportingTransaction;
 using SimulatedExchange.Queries.Mapper;
 using SimulatedExchange.Queries.Orders;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Queries.Handlers.Orders
@@ -18,9 +19,9 @@ namespace SimulatedExchange.Queries.Handlers.Orders
             this.mapper = mapper;
         }
 
-        public async Task<GetOrderQueryResult> QueryAsync(GetOrderQuery query)
+        public async Task<GetOrderQueryResult> Handle(GetOrderQuery request, CancellationToken cancellationToken)
         {
-            var transaction = new GetOrderTransaction { Id = Guid.Parse(query.Id) };
+            var transaction = new GetOrderTransaction { Id = Guid.Parse(request.Id) };
             var transactionResult = await bus.SendAsync(transaction);
             var result = mapper.MapToGetOrderQueryResult(transactionResult);
             return result;

@@ -2,6 +2,7 @@
 using SimulatedExchange.DataAccess.ReportingTransaction;
 using SimulatedExchange.Queries.Mapper;
 using SimulatedExchange.Queries.Orders;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Queries.Handlers.Orders
@@ -17,12 +18,12 @@ namespace SimulatedExchange.Queries.Handlers.Orders
             this.mapper = mapper;
         }
 
-        public async Task<GetOrdersQueryResult> QueryAsync(GetOrdersQuery query)
+        public async Task<GetOrdersQueryResult> Handle(GetOrdersQuery request, CancellationToken cancellationToken)
         {
             var transaction = new GetOrdersTransaction();
-            if (transaction.PagingOptions != null
-                && transaction.PagingOptions.PageIndex > 0
-                && transaction.PagingOptions.PageSize > 0)
+            if (request.PagingOptions != null
+                && request.PagingOptions.PageIndex > 0
+                && request.PagingOptions.PageSize > 0)
             {
                 transaction.PagingOptions = new DataAccess.ReportingTransaction.PagingOptions
                 {

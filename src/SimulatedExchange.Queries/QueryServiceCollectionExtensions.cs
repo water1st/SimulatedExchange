@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using SimulatedExchange.Queries.Bus;
 using SimulatedExchange.Queries.Handlers.Orders;
 using SimulatedExchange.Queries.Mapper;
@@ -11,7 +12,7 @@ namespace SimulatedExchange.Queries
         public static IServiceCollection AddQueries(this IServiceCollection services)
         {
             services.AddBus();
-            services.AddHandlers();
+            //services.AddHandlers();
             services.AddMapper();
 
             return services;
@@ -20,6 +21,7 @@ namespace SimulatedExchange.Queries
         private static IServiceCollection AddBus(this IServiceCollection services)
         {
             services.AddSingleton<IQueryBus, QueryBus>();
+            services.AddMediatR(typeof(IQueryBus).Assembly);
 
             return services;
         }

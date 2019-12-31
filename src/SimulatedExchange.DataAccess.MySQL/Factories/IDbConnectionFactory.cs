@@ -2,7 +2,7 @@
 
 namespace SimulatedExchange.DataAccess
 {
-    internal interface IDbConnectionFactory
+    public interface IDbConnectionFactory
     {
         IDbConnection Create(ConnectionType type);
     }

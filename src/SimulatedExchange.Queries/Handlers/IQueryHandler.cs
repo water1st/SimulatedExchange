@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using MediatR;
+using System.Threading.Tasks;
 
 namespace SimulatedExchange.Queries
 {
-    internal interface IQueryHandler<TQuery, TQueryResult>
+    internal interface IQueryHandler<TQuery, TQueryResult> : IRequestHandler<TQuery, TQueryResult>
         where TQuery : IQuery<TQueryResult>
     {
-        Task<TQueryResult> QueryAsync(TQuery query);
+
     }
 }

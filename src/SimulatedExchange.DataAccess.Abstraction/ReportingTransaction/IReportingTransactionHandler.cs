@@ -1,17 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace SimulatedExchange.DataAccess.ReportingTransaction
 {
-    public interface IReportingTransactionHandler<in TTransaction>
+    public interface IReportingTransactionHandler<in TTransaction> : IRequestHandler<TTransaction>
         where TTransaction : IReportingTransaction
     {
-        Task Handle(TTransaction transaction);
     }
 
-    public interface IReportingTransactionHandler<in TTransaction, TResult>
+    public interface IReportingTransactionHandler<in TTransaction, TResult> : IRequestHandler<TTransaction, TResult>
         where TTransaction : IReportingTransaction<TResult>
     {
-        Task<TResult> Handle(TTransaction transaction);
     }
 
 }
