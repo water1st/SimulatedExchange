@@ -1,7 +1,4 @@
-﻿using SimulatedExchange.Reporting;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SimulatedExchange.Applications.DTO
 {

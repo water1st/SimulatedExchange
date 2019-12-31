@@ -4,19 +4,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using SimulatedExchange.Api.Filters;
 using SimulatedExchange.Api.Hubs;
 using SimulatedExchange.Applications;
+using SimulatedExchange.ClientAdapter;
 using SimulatedExchange.Commands;
 using SimulatedExchange.DataAccess;
+using SimulatedExchange.DataAccess.Memory;
 using SimulatedExchange.Domain;
-using SimulatedExchange.Infrastructure;
 using SimulatedExchange.Queries;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.OpenApi.Models;
-using System.IO;
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace SimulatedExchange.Api
@@ -43,12 +43,24 @@ namespace SimulatedExchange.Api
             services.AddSignalR();
 
             services.AddApi();
-            services.AddApplicationLayout();
-            services.AddQueryLayout();
-            services.AddCommandLayout();
-            services.AddDomainLayout();
-            services.AddDataAccessLayout();
-            services.AddInfrastructureLayout();
+            services.AddApplications();
+            services.AddCommands();
+            services.AddQueries();
+            services.AddDomain();
+            services.AddClientAdapterCore();
+            services.AddDataAccessCore();
+            if (Environment.GetEnvironmentVariable("TEST").ToUpper() == "TRUE")
+            {
+                services.AddMemoryProvider();
+            }
+            else
+            {
+                services.AddMySQLProvider(options =>
+                {
+                    options.EventSourcingDbConnectionString = Configuration.GetConnectionString("MySQL_EventSourcingDb");
+                    options.ReporttingDbConnectionString = Configuration.GetConnectionString("MySQL_ReportingDb");
+                });
+            }
 
             services.AddLogging(builder =>
             {

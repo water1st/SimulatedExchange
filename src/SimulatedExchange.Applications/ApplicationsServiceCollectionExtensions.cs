@@ -7,7 +7,7 @@ namespace SimulatedExchange.Applications
 {
     public static class ApplicationsServiceCollectionExtensions
     {
-        public static IServiceCollection AddApplicationLayout(this IServiceCollection services)
+        public static IServiceCollection AddApplications(this IServiceCollection services)
         {
 
             AddApplicationServices(services);

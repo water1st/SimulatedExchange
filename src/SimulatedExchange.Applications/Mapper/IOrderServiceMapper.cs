@@ -5,8 +5,8 @@ namespace SimulatedExchange.Applications.Mapper
 {
     public interface IOrderServiceMapper
     {
-        OrderDetial Map(IOrderDetial detial);
-        OrderList Map(IOrderList list);
-        OrderListItem Map(IOrderListItem listItem);
+        OrderDetial Map(GetOrderQueryResult detial);
+        OrderList Map(GetOrdersQueryResult list);
+        CurrentPagingInfo Map(Queries.PagingInfo pagingInfo);
     }
 }

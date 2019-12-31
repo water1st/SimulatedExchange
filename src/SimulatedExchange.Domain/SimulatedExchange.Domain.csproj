@@ -6,10 +6,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
+    <PackageReference Include="NeoSmart.AsyncLock" Version="0.3.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SimulatedExchange.Abstraction\SimulatedExchange.Abstraction.csproj" />
+    <ProjectReference Include="..\SimulatedExchange.ClientAdapter.Abstraction\SimulatedExchange.ClientAdapter.Abstraction.csproj" />
+    <ProjectReference Include="..\SimulatedExchange.DataAccess.Abstraction\SimulatedExchange.DataAccess.Abstraction.csproj" />
   </ItemGroup>
 
 </Project>

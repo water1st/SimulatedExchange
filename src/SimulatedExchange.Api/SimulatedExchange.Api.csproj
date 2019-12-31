@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
@@ -32,10 +33,12 @@
   <ItemGroup>
     <ProjectReference Include="..\SimulatedExchange.Abstraction\SimulatedExchange.Abstraction.csproj" />
     <ProjectReference Include="..\SimulatedExchange.Applications\SimulatedExchange.Applications.csproj" />
+    <ProjectReference Include="..\SimulatedExchange.ClientAdapter.Abstraction\SimulatedExchange.ClientAdapter.Abstraction.csproj" />
     <ProjectReference Include="..\SimulatedExchange.Commands\SimulatedExchange.Commands.csproj" />
-    <ProjectReference Include="..\SimulatedExchange.DataAccess\SimulatedExchange.DataAccess.csproj" />
+    <ProjectReference Include="..\SimulatedExchange.DataAccess.Abstraction\SimulatedExchange.DataAccess.Abstraction.csproj" />
+    <ProjectReference Include="..\SimulatedExchange.DataAccess.Memory\SimulatedExchange.DataAccess.Memory.csproj" />
+    <ProjectReference Include="..\SimulatedExchange.DataAccess.MySQL\SimulatedExchange.DataAccess.MySQL.csproj" />
     <ProjectReference Include="..\SimulatedExchange.Domain\SimulatedExchange.Domain.csproj" />
-    <ProjectReference Include="..\SimulatedExchange.Infrastructure\SimulatedExchange.Infrastructure.csproj" />
     <ProjectReference Include="..\SimulatedExchange.Queries\SimulatedExchange.Queries.csproj" />
   </ItemGroup>
 

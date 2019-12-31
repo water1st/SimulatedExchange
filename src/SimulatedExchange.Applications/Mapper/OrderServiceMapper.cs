@@ -5,7 +5,7 @@ namespace SimulatedExchange.Applications.Mapper
 {
     public class OrderServiceMapper : IOrderServiceMapper
     {
-        public OrderDetial Map(IOrderDetial detial)
+        public OrderDetial Map(GetOrderQueryResult detial)
         {
             var result = new OrderDetial
             {
@@ -22,19 +22,20 @@ namespace SimulatedExchange.Applications.Mapper
             return result;
         }
 
-        public OrderList Map(IOrderList list)
+        public OrderList Map(GetOrdersQueryResult list)
         {
             var result = new OrderList();
             foreach (var item in list)
             {
                 result.Add(Map(item));
             }
-            result.PagingInfo = list.Page;
+            result.PagingInfo = Map(list.PagingInfo);
 
             return result;
         }
 
-        public OrderListItem Map(IOrderListItem listItem)
+
+        public OrderListItem Map(GetOrdersQueryResultItem listItem)
         {
             var result = new OrderListItem
             {
@@ -50,6 +51,17 @@ namespace SimulatedExchange.Applications.Mapper
             };
 
             return result;
+        }
+
+        public CurrentPagingInfo Map(Queries.PagingInfo pagingInfo)
+        {
+            var reuslt = new CurrentPagingInfo
+            {
+                CurrentPageIndex = pagingInfo.CurrentPageIndex,
+                PageCount = pagingInfo.PageCount
+            };
+
+            return reuslt;
         }
     }
 }

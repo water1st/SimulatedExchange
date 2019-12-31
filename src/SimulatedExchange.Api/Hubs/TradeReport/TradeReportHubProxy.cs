@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using SimulatedExchange.Domain.Orders;
-using SimulatedExchange.Messages;
+using SimulatedExchange.ClientAdapter.Abstraction.Handlers;
+using SimulatedExchange.ClientAdapter.Messages;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Api.Hubs

@@ -1,5 +1,4 @@
 ﻿using SimulatedExchange.Applications.DTO;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Applications.Services

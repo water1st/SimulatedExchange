@@ -1,5 +1,5 @@
-﻿using SimulatedExchange.Bus;
-using SimulatedExchange.Commands.Commands;
+﻿using SimulatedExchange.Commands;
+using SimulatedExchange.Commands.Bus;
 using System;
 using System.Threading.Tasks;
 

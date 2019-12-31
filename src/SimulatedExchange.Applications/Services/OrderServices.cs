@@ -1,11 +1,11 @@
 ﻿using SimulatedExchange.Applications.DTO;
 using SimulatedExchange.Applications.Mapper;
 using SimulatedExchange.Applications.Validators;
-using SimulatedExchange.Bus;
-using SimulatedExchange.Commands.Commands;
+using SimulatedExchange.Commands;
+using SimulatedExchange.Commands.Bus;
 using SimulatedExchange.Queries;
+using SimulatedExchange.Queries.Bus;
 using SimulatedExchange.Queries.Orders;
-using SimulatedExchange.Reporting;
 using System;
 using System.Threading.Tasks;
 
@@ -39,7 +39,7 @@ namespace SimulatedExchange.Applications.Services
         {
             validator.VerifyOrderInfo(orderInfo);
 
-            var command = new AddOrderCommand(Guid.NewGuid(), orderInfo.ClientId,
+            var command = new AddOrderCommand(orderInfo.ClientId,
                 orderInfo.PairSymbols, orderInfo.Price,
                 orderInfo.Amount, orderInfo.Exchange, orderInfo.Type);
 
@@ -50,22 +50,22 @@ namespace SimulatedExchange.Applications.Services
         {
             validator.VerifyId(id);
 
-            var query = new GetOrderTransaction { Id = Guid.Parse(id) };
-            var result = await queryBus.SendAsync<GetOrderTransaction, IOrderDetial>(query);
+            var query = new GetOrderQuery { Id = id };
+            var result = await queryBus.SendAsync(query);
 
             return mapper.Map(result);
         }
 
         public async Task<OrderList> GetList(int pageIndex, int pageSize)
         {
-            QueryPagingInfo paging = null;
+            PagingOptions paging = null;
             if (pageIndex > 0 && pageSize > 0)
             {
-                paging = new QueryPagingInfo { PageIndex = pageIndex, PageSize = pageSize };
+                paging = new PagingOptions { PageIndex = pageIndex, PageSize = pageSize };
             }
-            var query = new GetOrdersTransaction { Paging = paging };
+            var query = new GetOrdersQuery { PagingOptions = paging };
 
-            var result = await queryBus.SendAsync<GetOrdersTransaction, IOrderList>(query);
+            var result = await queryBus.SendAsync(query);
 
             return mapper.Map(result);
         }

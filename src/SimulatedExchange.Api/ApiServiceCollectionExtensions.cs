@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SimulatedExchange.Api.Hubs;
 using SimulatedExchange.Api.Mapper;
-using SimulatedExchange.Domain.Orders;
-using SimulatedExchange.Messages;
+using SimulatedExchange.ClientAdapter.Abstraction.Handlers;
+using SimulatedExchange.ClientAdapter.Messages;
+
 
 namespace SimulatedExchange.Api
 {
