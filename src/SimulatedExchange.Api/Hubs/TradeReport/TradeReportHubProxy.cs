@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Memory;
 using SimulatedExchange.ClientAdapter.Abstraction.Handlers;
 using SimulatedExchange.ClientAdapter.Messages;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Api.Hubs
@@ -13,10 +15,12 @@ namespace SimulatedExchange.Api.Hubs
         IMessageHandler<PartialTransactionMessage>
     {
         private readonly IHubContext<TradeReportHub> hub;
+        private readonly IMemoryCache cache;
 
-        public TradeReportHubProxy(IHubContext<TradeReportHub> hub)
+        public TradeReportHubProxy(IHubContext<TradeReportHub> hub, IMemoryCache cache)
         {
             this.hub = hub;
+            this.cache = cache;
         }
 
         public async Task Handle(NewOrderMessage message)
@@ -46,7 +50,26 @@ namespace SimulatedExchange.Api.Hubs
 
         private async Task SendMessage(string eventName, OrderState state)
         {
-            await hub.Clients.All.SendAsync(eventName, state);
+            if (cache.TryGetValue(Constants.TradeServiceConnectedKey, out bool connectioned))
+            {
+                if (connectioned)
+                {
+                    try
+                    {
+                        await hub.Clients.All.SendAsync(eventName, state);
+                        return;
+                    }
+                    catch { }
+                }
+            }
+            SaveUnsendMessage(new TradeMessage { Method = eventName, Parameter = state });
         }
+
+        private void SaveUnsendMessage(TradeMessage message)
+        {
+            var queue = cache.GetOrCreate(Constants.TeadeReportingUnsendMessageCacheKey, entry => new ConcurrentQueue<TradeMessage>());
+            queue.Enqueue(message);
+        }
+
     }
 }

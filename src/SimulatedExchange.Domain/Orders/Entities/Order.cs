@@ -122,7 +122,8 @@ namespace SimulatedExchange.Domain.Orders
                 Price = Price,
                 Status = Status,
                 Type = Type,
-                Version = Version
+                Version = Version,
+                ClientId = ClientId
             };
         }
 
@@ -138,6 +139,7 @@ namespace SimulatedExchange.Domain.Orders
             Status = orderMemento.Status;
             Type = orderMemento.Type;
             Version = orderMemento.Version;
+            ClientId = orderMemento.ClientId;
         }
 
         public void Handle(NewOrderEvent @event)
@@ -149,6 +151,7 @@ namespace SimulatedExchange.Domain.Orders
             PairSymbols = @event.Symbols;
             Type = @event.Type;
             Status = OrderStatus.Opened;
+            ClientId = @event.ClientId;
         }
 
         public void Handle(CancelOrderEvent @event)

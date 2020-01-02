@@ -25,9 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.DataAcces
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.DataAccess.MySQL", "src\SimulatedExchange.DataAccess.MySQL\SimulatedExchange.DataAccess.MySQL.csproj", "{51109C10-09D5-4BAC-9A39-3CDFA936ED9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatedExchange.ClientAdapter.Abstraction", "src\SimulatedExchange.ClientAdapter.Abstraction\SimulatedExchange.ClientAdapter.Abstraction.csproj", "{B6CA8115-1FA0-406A-9192-557B9E498A92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.ClientAdapter.Abstraction", "src\SimulatedExchange.ClientAdapter.Abstraction\SimulatedExchange.ClientAdapter.Abstraction.csproj", "{B6CA8115-1FA0-406A-9192-557B9E498A92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatedExchange.DataAccess.Memory", "src\SimulatedExchange.DataAccess.Memory\SimulatedExchange.DataAccess.Memory.csproj", "{D937761D-B177-4B60-8927-A6775C68D73B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedExchange.DataAccess.Memory", "src\SimulatedExchange.DataAccess.Memory\SimulatedExchange.DataAccess.Memory.csproj", "{D937761D-B177-4B60-8927-A6775C68D73B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatedExchange.Reporting.Test", "test\SimulatedExchange.Reporting.Test\SimulatedExchange.Reporting.Test.csproj", "{7A2A3E48-5573-4223-82E0-9A5B91D9FBED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,10 @@ Global
 		{D937761D-B177-4B60-8927-A6775C68D73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D937761D-B177-4B60-8927-A6775C68D73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D937761D-B177-4B60-8927-A6775C68D73B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A2A3E48-5573-4223-82E0-9A5B91D9FBED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A2A3E48-5573-4223-82E0-9A5B91D9FBED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A2A3E48-5573-4223-82E0-9A5B91D9FBED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A2A3E48-5573-4223-82E0-9A5B91D9FBED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{51109C10-09D5-4BAC-9A39-3CDFA936ED9C} = {D4755BA7-A689-4E74-94DA-C3B47794D542}
 		{B6CA8115-1FA0-406A-9192-557B9E498A92} = {D4755BA7-A689-4E74-94DA-C3B47794D542}
 		{D937761D-B177-4B60-8927-A6775C68D73B} = {D4755BA7-A689-4E74-94DA-C3B47794D542}
+		{7A2A3E48-5573-4223-82E0-9A5B91D9FBED} = {504DEFFF-A2A5-4E07-A256-76F0C134CE8E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8F3F05D-5A56-40C8-9A7F-575460D8D99F}

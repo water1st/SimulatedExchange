@@ -41,7 +41,7 @@ namespace SimulatedExchange.Api
             });
 
             services.AddSignalR();
-
+            services.AddMemoryCache();
             services.AddApi();
             services.AddApplications();
             services.AddCommands();
