@@ -22,7 +22,7 @@
       "launchBrowser": true,
       "launchUrl": "http://localhost:5000/swagger",
       "environmentVariables": {
-        "RUN_AT_LOCAL": "true",
+        "SIMULATEDEXCHANGE_RUNATLOCAL": "true",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5000"
