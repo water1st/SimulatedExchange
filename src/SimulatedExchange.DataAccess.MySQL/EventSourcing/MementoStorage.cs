@@ -67,7 +67,7 @@ namespace SimulatedExchange.DataAccess.EventSourcing
                         await connection.ExecuteAsync(INSERT_SQL, new
                         {
                             id = Guid.NewGuid().ToString(),
-                            aggregateId = memento.AggregateRootId.ToString(),
+                            aggregateId = memento.Id.ToString(),
                             memento = json,
                             mementoType = type.FullName,
                             version = memento.Version

@@ -43,7 +43,7 @@ namespace SimulatedExchange.DataAccess.Memory.EventSourcing
 
         public Task SaveMementoAsync(BaseMemento memento)
         {
-            var stack = mementos.GetOrAdd(memento.AggregateRootId, id => new ConcurrentStack<BaseMemento>());
+            var stack = mementos.GetOrAdd(memento.Id, id => new ConcurrentStack<BaseMemento>());
             stack.Push(memento);
             return Task.CompletedTask;
         }

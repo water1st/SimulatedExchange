@@ -47,7 +47,6 @@ namespace SimulatedExchange.Domain
             var last = history.Last();
             Version = last.Version;
             EventVersion = Version;
-            Id = last.AggregateId;
         }
 
         public void MarkEventCommited()

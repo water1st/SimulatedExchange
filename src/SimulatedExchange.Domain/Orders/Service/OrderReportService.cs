@@ -21,19 +21,19 @@ namespace SimulatedExchange.Domain.Orders
 
         public async Task Handle(CancelOrderEvent @event)
         {
-            var state = await GetState(@event.AggregateId);
+            var state = await GetState(@event.Id);
             await messageBus.SendAsync(new PartialCanceledMessage { State = state });
         }
 
         public async Task Handle(NewOrderEvent @event)
         {
-            var state = await GetState(@event.AggregateId);
+            var state = await GetState(@event.Id);
             await messageBus.SendAsync(new NewOrderMessage { State = state });
         }
 
         public async Task Handle(TransactionEvent @event)
         {
-            var state = await GetState(@event.AggregateId);
+            var state = await GetState(@event.Id);
             await messageBus.SendAsync(new FullTransactionMessage { State = state });
         }
 

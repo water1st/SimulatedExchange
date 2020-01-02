@@ -88,7 +88,6 @@ namespace SimulatedExchange.DataAccess.EventSourcing
                         {
                             version++;
                             @event.Version = version;
-                            @event.Id = Guid.NewGuid();
                             //每1024个事件创建一个快照
                             if (version % 1024 == 0)
                             {
@@ -101,7 +100,7 @@ namespace SimulatedExchange.DataAccess.EventSourcing
 
                             await connection.ExecuteAsync(INSERT_SQL, new
                             {
-                                Id = @event.Id.ToString(),
+                                Id = Guid.NewGuid().ToString(),
                                 aggregateId = aggregateRoot.Id.ToString(),
                                 Event = json,
                                 EventType = type.FullName,

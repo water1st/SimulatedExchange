@@ -35,7 +35,7 @@ namespace SimulatedExchange.Domain.Orders
             var @event = new NewOrderEvent
             {
                 ClientId = orderInfo.ClientId,
-                AggregateId = Id,
+                Id = Guid.NewGuid(),
                 Symbols = orderInfo.Symbols,
                 Price = orderInfo.Price,
                 Amount = orderInfo.Amount,
@@ -59,7 +59,7 @@ namespace SimulatedExchange.Domain.Orders
                 throw new OrderHasBeenDealException("订单已完全成交");
             }
 
-            var @event = new CancelOrderEvent { AggregateId = Id, DateTime = DateTimeOffset.UtcNow };
+            var @event = new CancelOrderEvent { Id = Id, DateTime = DateTimeOffset.UtcNow };
             if (Status == OrderStatus.PartialTransaction)
             {
                 @event.Status = OrderStatus.PartialCanceled;
@@ -88,7 +88,7 @@ namespace SimulatedExchange.Domain.Orders
             var volume = Volume + info.Amount;
             var @event = new TransactionEvent
             {
-                AggregateId = Id,
+                Id = Id,
                 Amount = volume,
                 Price = info.Price,
                 DateTime = DateTimeOffset.UtcNow
@@ -117,7 +117,7 @@ namespace SimulatedExchange.Domain.Orders
                 TotalAmount = TotalAmount,
                 Volume = Volume,
                 Exchange = Exchange,
-                AggregateRootId = Id,
+                Id = Id,
                 PairSymbols = PairSymbols,
                 Price = Price,
                 Status = Status,
@@ -130,7 +130,7 @@ namespace SimulatedExchange.Domain.Orders
         public override void SetMemento(BaseMemento memento)
         {
             var orderMemento = (OrderMemento)memento;
-            Id = orderMemento.AggregateRootId;
+            Id = orderMemento.Id;
             TotalAmount = orderMemento.TotalAmount;
             Volume = orderMemento.Volume;
             Exchange = orderMemento.Exchange;
@@ -152,6 +152,7 @@ namespace SimulatedExchange.Domain.Orders
             Type = @event.Type;
             Status = OrderStatus.Opened;
             ClientId = @event.ClientId;
+            Id = @event.Id;
         }
 
         public void Handle(CancelOrderEvent @event)
