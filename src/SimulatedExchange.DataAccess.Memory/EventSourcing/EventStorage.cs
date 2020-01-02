@@ -6,12 +6,11 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.DataAccess.Memory.EventSourcing
 {
-    public class EventStorage : IEventStorage
+    internal class EventStorage : IEventStorage
     {
         private static readonly ConcurrentDictionary<Guid, ConcurrentQueue<Event>> events;
         private readonly IMementoStorage mementoStorage;
