@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Text="服务器地址：" />
-        <TextBox Grid.Row="0" Grid.Column="1" x:Name="addressTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Text="http://192.168.0.244:50000/api/TRADE_REPORT_CHANNEL" TextWrapping="Wrap" Width="621"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="addressTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Text="http://192.168.0.244:50000/api/TRADE_REPORT_CHANNEL" TextWrapping="Wrap" Width="650"/>
         <Button Grid.Row="0" Grid.Column="2" Content="链接" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40" Click="Button_Click"/>
 
         <TextBox  Grid.Row="1" Grid.Column="0" x:Name="printTextBox" Margin="10,10,10,10" Grid.ColumnSpan="3"/>
