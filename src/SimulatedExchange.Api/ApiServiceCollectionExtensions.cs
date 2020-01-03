@@ -2,8 +2,7 @@
 using SimulatedExchange.Api.Hubs;
 using SimulatedExchange.Api.Mapper;
 using SimulatedExchange.ClientAdapter.Abstraction.Handlers;
-using SimulatedExchange.ClientAdapter.Messages;
-
+using SimulatedExchange.ClientAdapter.Messages.Orders;
 
 namespace SimulatedExchange.Api
 {
@@ -18,11 +17,7 @@ namespace SimulatedExchange.Api
 
         private static void AddMessageHandler(IServiceCollection services)
         {
-            services.AddTransient<IMessageHandler<NewOrderMessage>, TradeReportHubProxy>();
-            services.AddTransient<IMessageHandler<PartialTransactionMessage>, TradeReportHubProxy>();
-            services.AddTransient<IMessageHandler<FullTransactionMessage>, TradeReportHubProxy>();
-            services.AddTransient<IMessageHandler<PartialCanceledMessage>, TradeReportHubProxy>();
-            services.AddTransient<IMessageHandler<FullCanceledMessage>, TradeReportHubProxy>();
+            services.AddTransient<IMessageHandler<OrderReportingMessage>, TradeReportHubProxy>();
         }
 
         private static void AddMapper(IServiceCollection services)

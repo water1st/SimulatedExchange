@@ -19,5 +19,7 @@ namespace SimulatedExchange.DataAccess.ReportingTransaction
         public int Type { get; set; }
         //订单时间
         public DateTime DateTime { get; set; }
+        public int Status { get; set; }
+        public int Volume { get; set; }
     }
 }

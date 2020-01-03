@@ -1,10 +1,32 @@
 ﻿using SimulatedExchange.DataAccess.ReportingTransaction.Orders;
 using SimulatedExchange.DataAccess.ReportingTransaction;
+using System;
 
 namespace SimulatedExchange.DataAccess.Mapper
 {
     internal class OrderMapper : IOrderMapper
     {
+        public OrderReporting.PersistentObject MapFromAddOrderTransaction(AddOrderTransaction transaction)
+        {
+            var symbol = transaction.Symbols.Split('-');
+            var result = new OrderReporting.PersistentObject
+            {
+                ClientId = transaction.ClientId,
+                CreatedTimeUtc = DateTime.UtcNow,
+                Exchange = transaction.Exchange,
+                FromCurrencySymbol = symbol[1],
+                Id = transaction.Id,
+                Price = transaction.Price,
+                Status = transaction.Status,
+                ToCurrencySymbol = symbol[0],
+                TotalAmount = transaction.Amount,
+                Type = transaction.Type,
+                Volume = transaction.Volume
+            };
+
+            return result;
+        }
+
         public GetOrdersTransactionResult.GetOrdersTransactionResultItem MapToGetOrdersTransactionResultItem(OrderReporting.PersistentObject persistentObject)
         {
             var result = new GetOrdersTransactionResult.GetOrdersTransactionResultItem();

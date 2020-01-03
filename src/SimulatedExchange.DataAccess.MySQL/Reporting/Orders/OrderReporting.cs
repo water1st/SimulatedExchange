@@ -70,20 +70,8 @@ namespace SimulatedExchange.DataAccess.ReportingTransaction.Orders
         {
             var symbols = request.Symbols.Split('-');
             const string INSERT_SQL = "INSERT INTO orders (Id,ClientId,FromCurrencySymbol,ToCurrencySymbol,Price,Volume,TotalAmount,Type,Status,Exchange,CreatedTimeUtc) VALUES (@Id,@ClientId,@FromCurrencySymbol,@ToCurrencySymbol,@Price,@Volume,@TotalAmount,@Type,@Status,@Exchange,@CreatedTimeUtc)";
-            await ExecuteSQLAsync(INSERT_SQL, new PersistentObject
-            {
-                Id = request.Id,
-                FromCurrencySymbol = symbols[1],
-                ToCurrencySymbol = symbols[0],
-                Price = request.Price,
-                Volume = 0,
-                TotalAmount = request.Amount,
-                Exchange = request.Exchange,
-                Type = request.Type,
-                Status = 0,
-                ClientId = request.ClientId,
-                CreatedTimeUtc = request.DateTime
-            });
+            var persistentObject = mapper.MapFromAddOrderTransaction(request);
+            await ExecuteSQLAsync(INSERT_SQL, persistentObject);
 
             return Unit.Value;
         }

@@ -8,5 +8,6 @@ namespace SimulatedExchange.DataAccess.Mapper
     {
         GetOrderTransactionResult MapToGetOrderTransactionResult(PersistentObject persistentObject);
         GetOrdersTransactionResultItem MapToGetOrdersTransactionResultItem(PersistentObject persistentObject);
+        PersistentObject MapFromAddOrderTransaction(AddOrderTransaction transaction);
     }
 }

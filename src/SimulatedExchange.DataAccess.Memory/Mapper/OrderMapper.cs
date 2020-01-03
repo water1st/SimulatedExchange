@@ -17,11 +17,11 @@ namespace SimulatedExchange.DataAccess.Mapper
                 FromCurrencySymbol = symbol[1],
                 Id = transaction.Id,
                 Price = transaction.Price,
-                Status = 0,
+                Status = transaction.Status,
                 ToCurrencySymbol = symbol[0],
                 TotalAmount = transaction.Amount,
                 Type = transaction.Type,
-                Volume = 0
+                Volume = transaction.Volume
             };
 
             return result;

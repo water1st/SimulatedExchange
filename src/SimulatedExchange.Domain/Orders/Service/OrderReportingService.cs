@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 
 namespace SimulatedExchange.Domain.Orders
 {
-    public class OrderReportingService : IEventHandler<NewOrderEvent>,
-        IEventHandler<CancelOrderEvent>,
-        IEventHandler<TransactionEvent>
+    public class OrderReportingService :
+        IEventHandler<NewOrderEvent>,
+        IEventHandler<PartialCancelOrderEvent>,
+        IEventHandler<FullCancelOrderEvent>,
+        IEventHandler<PartialTransactionEvent>,
+        IEventHandler<FullTransactionEvent>
     {
         private readonly ITransactionBus bus;
 
@@ -27,26 +30,51 @@ namespace SimulatedExchange.Domain.Orders
             transaction.Symbols = @event.Symbols.ToString();
             transaction.Type = (int)@event.Type;
             transaction.DateTime = @event.DateTime.DateTime;
+            transaction.Status = (int)OrderStatus.Opened;
+            transaction.Volume = 0;
 
             await bus.SendAsync(transaction);
         }
 
-        public async Task Handle(CancelOrderEvent @event)
+        public async Task Handle(PartialCancelOrderEvent @event)
         {
             var transaction = new UpdateOrderStatusTransaction();
 
             transaction.Id = @event.Id.ToString();
-            transaction.Status = (int)@event.Status;
+            transaction.Status = (int)OrderStatus.PartialCanceled;
             transaction.DateTime = @event.DateTime.DateTime;
 
             await bus.SendAsync(transaction);
         }
 
-        public async Task Handle(TransactionEvent @event)
+        public async Task Handle(FullTransactionEvent @event)
         {
             var transaction = new UpdateOrderTransaction();
 
-            transaction.Status = (int)@event.Status;
+            transaction.Status = (int)OrderStatus.FullTransaction;
+            transaction.Volume = @event.Amount;
+            transaction.Id = @event.Id.ToString();
+            transaction.DateTime = @event.DateTime.DateTime;
+
+            await bus.SendAsync(transaction);
+        }
+
+        public async Task Handle(FullCancelOrderEvent @event)
+        {
+            var transaction = new UpdateOrderStatusTransaction();
+
+            transaction.Id = @event.Id.ToString();
+            transaction.Status = (int)OrderStatus.FullCanceled;
+            transaction.DateTime = @event.DateTime.DateTime;
+
+            await bus.SendAsync(transaction);
+        }
+
+        public async Task Handle(PartialTransactionEvent @event)
+        {
+            var transaction = new UpdateOrderTransaction();
+
+            transaction.Status = (int)OrderStatus.PartialTransaction;
             transaction.Volume = @event.Amount;
             transaction.Id = @event.Id.ToString();
             transaction.DateTime = @event.DateTime.DateTime;

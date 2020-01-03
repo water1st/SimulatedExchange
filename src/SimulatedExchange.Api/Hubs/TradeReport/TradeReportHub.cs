@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using SimulatedExchange.ClientAdapter.Messages.Orders;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
@@ -34,11 +35,11 @@ namespace SimulatedExchange.Api.Hubs
 
         private async Task SendUnsendMessaged()
         {
-            if (cache.TryGetValue(Constants.TeadeReportingUnsendMessageCacheKey, out ConcurrentQueue<TradeMessage> messages))
+            if (cache.TryGetValue(Constants.TeadeReportingUnsendMessageCacheKey, out ConcurrentQueue<OrderReportingMessage> messages))
             {
                 while (messages.TryDequeue(out var message))
                 {
-                    await Clients.All.SendAsync(message.Method, message.Parameter);
+                    await Clients.All.SendAsync(message.Event.ToString(), message.State);
                 }
             }
         }

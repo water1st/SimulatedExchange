@@ -1,18 +1,14 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using SimulatedExchange.ClientAdapter.Abstraction.Handlers;
-using SimulatedExchange.ClientAdapter.Messages;
+using SimulatedExchange.ClientAdapter.Messages.Orders;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Api.Hubs
 {
     public class TradeReportHubProxy :
-        IMessageHandler<NewOrderMessage>,
-        IMessageHandler<PartialCanceledMessage>,
-        IMessageHandler<FullCanceledMessage>,
-        IMessageHandler<FullTransactionMessage>,
-        IMessageHandler<PartialTransactionMessage>
+        IMessageHandler<OrderReportingMessage>
     {
         private readonly IHubContext<TradeReportHub> hub;
         private readonly IMemoryCache cache;
@@ -23,32 +19,8 @@ namespace SimulatedExchange.Api.Hubs
             this.cache = cache;
         }
 
-        public async Task Handle(NewOrderMessage message)
-        {
-            await SendMessage("New", message.State);
-        }
 
-        public async Task Handle(PartialTransactionMessage message)
-        {
-            await SendMessage("PartialDeal", message.State);
-        }
-
-        public async Task Handle(FullTransactionMessage message)
-        {
-            await SendMessage("FullDeal", message.State);
-        }
-
-        public async Task Handle(PartialCanceledMessage message)
-        {
-            await SendMessage("PartialCancel", message.State);
-        }
-
-        public async Task Handle(FullCanceledMessage message)
-        {
-            await SendMessage("FullCanceled", message.State);
-        }
-
-        private async Task SendMessage(string eventName, OrderState state)
+        private async Task SendMessage(OrderReportingMessage message)
         {
             if (cache.TryGetValue(Constants.TradeServiceConnectedKey, out bool connectioned))
             {
@@ -56,20 +28,24 @@ namespace SimulatedExchange.Api.Hubs
                 {
                     try
                     {
-                        await hub.Clients.All.SendAsync(eventName, state);
+                        await hub.Clients.All.SendAsync(message.Event.ToString(), message.State);
                         return;
                     }
                     catch { }
                 }
             }
-            SaveUnsendMessage(new TradeMessage { Method = eventName, Parameter = state });
+            SaveUnsendMessage(message);
         }
 
-        private void SaveUnsendMessage(TradeMessage message)
+        private void SaveUnsendMessage(OrderReportingMessage message)
         {
-            var queue = cache.GetOrCreate(Constants.TeadeReportingUnsendMessageCacheKey, entry => new ConcurrentQueue<TradeMessage>());
+            var queue = cache.GetOrCreate(Constants.TeadeReportingUnsendMessageCacheKey, entry => new ConcurrentQueue<OrderReportingMessage>());
             queue.Enqueue(message);
         }
 
+        public async Task Handle(OrderReportingMessage message)
+        {
+            await SendMessage(message);
+        }
     }
 }

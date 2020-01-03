@@ -2,8 +2,7 @@
 
 namespace SimulatedExchange.Domain.Orders
 {
-    public abstract class OrderEvent : Event
+    public class PartialCancelOrderEvent : Event
     {
-        public OrderStatus Status { get; set; }
     }
 }

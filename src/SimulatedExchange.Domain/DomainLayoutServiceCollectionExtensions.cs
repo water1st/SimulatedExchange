@@ -24,12 +24,16 @@ namespace SimulatedExchange.Domain
         private static void AddEventHandlers(IServiceCollection services)
         {
             services.AddTransient<IEventHandler<NewOrderEvent>, OrderReportService>();
-            services.AddTransient<IEventHandler<CancelOrderEvent>, OrderReportService>();
-            services.AddTransient<IEventHandler<TransactionEvent>, OrderReportService>();
+            services.AddTransient<IEventHandler<PartialCancelOrderEvent>, OrderReportService>();
+            services.AddTransient<IEventHandler<FullCancelOrderEvent>, OrderReportService>();
+            services.AddTransient<IEventHandler<PartialTransactionEvent>, OrderReportService>();
+            services.AddTransient<IEventHandler<FullTransactionEvent>, OrderReportService>();
 
             services.AddTransient<IEventHandler<NewOrderEvent>, OrderReportingService>();
-            services.AddTransient<IEventHandler<CancelOrderEvent>, OrderReportingService>();
-            services.AddTransient<IEventHandler<TransactionEvent>, OrderReportingService>();
+            services.AddTransient<IEventHandler<PartialCancelOrderEvent>, OrderReportingService>();
+            services.AddTransient<IEventHandler<FullCancelOrderEvent>, OrderReportingService>();
+            services.AddTransient<IEventHandler<PartialTransactionEvent>, OrderReportingService>();
+            services.AddTransient<IEventHandler<FullTransactionEvent>, OrderReportingService>();
         }
 
         private static void AddDomainServices(IServiceCollection services)
