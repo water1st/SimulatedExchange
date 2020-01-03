@@ -13,7 +13,7 @@ namespace SimulatedExchange.Domain.Orders
 
     {
         //客户端id
-        public string ClientId { get; set; }
+        public string ClientId { get; private set; }
         //币对
         public PairSymbols PairSymbols { get; private set; }
         //委托价格 
