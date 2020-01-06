@@ -99,7 +99,7 @@ namespace SimulatedExchange.Domain.Orders
 
             if (volume > TotalAmount)
             {
-                throw new ArgumentOutOfRangeException("成交量大于委托总量");
+                throw new InvalidValueException("成交量大于委托总量");
             }
 
             else if (volume == TotalAmount)
