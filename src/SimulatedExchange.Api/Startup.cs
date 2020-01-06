@@ -8,7 +8,6 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using SimulatedExchange.Api.Filters;
 using SimulatedExchange.Api.Hubs;
-using SimulatedExchange.Api.Serializer;
 using SimulatedExchange.Applications;
 using SimulatedExchange.ClientAdapter;
 using SimulatedExchange.Commands;
