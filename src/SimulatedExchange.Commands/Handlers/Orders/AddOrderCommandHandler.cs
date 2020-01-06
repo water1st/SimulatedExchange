@@ -1,10 +1,12 @@
 ﻿using SimulatedExchange.Domain.Orders;
 using SimulatedExchange.Domain.Orders.Service;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Commands.Handlers
 {
-    internal class AddOrderCommandHandler : ICommandHandler<AddOrderCommand>
+    internal class AddOrderCommandHandler : ICommandHandler<AddOrderCommand, Guid>
     {
         private readonly IOrderService orderService;
 
@@ -13,17 +15,17 @@ namespace SimulatedExchange.Commands.Handlers
             this.orderService = orderService;
         }
 
-        public async Task ExecuteAsync(AddOrderCommand command)
+        public async Task<Guid> Handle(AddOrderCommand request, CancellationToken cancellationToken)
         {
-            await orderService.PlaceOrderAsync(new OrderInfo
+            var id = await orderService.PlaceOrderAsync(new OrderInfo
             {
-                Amount = command.Amount,
-                Exchange = (Exchange)command.Exchange,
-                Price = command.Price,
-                Symbols = command.Symbols,
-                ClientId = command.ClientId
+                Amount = request.Amount,
+                Exchange = (Exchange)request.Exchange,
+                Price = request.Price,
+                Symbols = request.Symbols
+            });
 
-            }).ConfigureAwait(false);
+            return id;
         }
     }
 }

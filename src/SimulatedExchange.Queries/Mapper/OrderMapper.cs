@@ -10,7 +10,6 @@ namespace SimulatedExchange.Queries.Mapper
         {
             var result = new GetOrderQueryResult
             {
-                ClientId = item.ClientId,
                 Exchange = item.Exchange,
                 Id = item.Id,
                 PairSymbols = item.PairSymbols,
@@ -51,7 +50,6 @@ namespace SimulatedExchange.Queries.Mapper
         {
             var result = new GetOrdersQueryResultItem
             {
-                ClientId = item.ClientId,
                 Exchange = item.Exchange,
                 Id = item.Id,
                 PairSymbols = item.PairSymbols,

@@ -16,8 +16,6 @@ namespace SimulatedExchange.DataAccess.ReportingTransaction
         {
             //orderid
             public string Id { get; set; }
-            //client orderid
-            public string ClientId { get; set; }
             //币对
             public string PairSymbols { get; set; }
             //委托价格 

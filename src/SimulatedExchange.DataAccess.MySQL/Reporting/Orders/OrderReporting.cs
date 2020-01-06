@@ -68,8 +68,7 @@ namespace SimulatedExchange.DataAccess.ReportingTransaction.Orders
 
         public async Task<Unit> Handle(AddOrderTransaction request, CancellationToken cancellationToken)
         {
-            var symbols = request.Symbols.Split('-');
-            const string INSERT_SQL = "INSERT INTO orders (Id,ClientId,FromCurrencySymbol,ToCurrencySymbol,Price,Volume,TotalAmount,Type,Status,Exchange,CreatedTimeUtc) VALUES (@Id,@ClientId,@FromCurrencySymbol,@ToCurrencySymbol,@Price,@Volume,@TotalAmount,@Type,@Status,@Exchange,@CreatedTimeUtc)";
+            const string INSERT_SQL = "INSERT INTO orders (Id,FromCurrencySymbol,ToCurrencySymbol,Price,Volume,TotalAmount,Type,Status,Exchange,CreatedTimeUtc) VALUES (@Id,@FromCurrencySymbol,@ToCurrencySymbol,@Price,@Volume,@TotalAmount,@Type,@Status,@Exchange,@CreatedTimeUtc)";
             var persistentObject = mapper.MapFromAddOrderTransaction(request);
             await ExecuteSQLAsync(INSERT_SQL, persistentObject);
 

@@ -7,7 +7,7 @@ namespace SimulatedExchange.Applications.Services
     {
         Task<OrderDetial> GetIdAsync(string id);
         Task<OrderList> GetList(int pageIndex, int PageSize);
-        Task CreateNewOrder(OrderInfo orderInfo);
+        Task<string> CreateNewOrder(OrderInfo orderInfo);
         Task CalcelOrderAsync(string id);
     }
 }

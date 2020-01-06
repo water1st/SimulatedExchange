@@ -1,5 +1,7 @@
-﻿using SimulatedExchange.Domain.Orders;
+﻿using MediatR;
+using SimulatedExchange.Domain.Orders;
 using SimulatedExchange.Domain.Orders.Service;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Commands.Handlers
@@ -13,13 +15,15 @@ namespace SimulatedExchange.Commands.Handlers
             this.orderService = orderService;
         }
 
-        public async Task ExecuteAsync(OrderTransactionCommand command)
+        public async Task<Unit> Handle(OrderTransactionCommand request, CancellationToken cancellationToken)
         {
-            await orderService.TransactionAsync(command.Id, new TransactionInfo
+            await orderService.TransactionAsync(request.Id, new TransactionInfo
             {
-                Amount = command.Amount,
-                Price = command.Price
+                Amount = request.Amount,
+                Price = request.Price
             }).ConfigureAwait(false);
+
+            return Unit.Value;
         }
     }
 }

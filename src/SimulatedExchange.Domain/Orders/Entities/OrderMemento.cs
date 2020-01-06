@@ -10,8 +10,6 @@
 
         public decimal TotalAmount { get; set; }
 
-        public string ClientId { get; set; }
-
         public Exchange Exchange { get; set; }
 
         public OrderType Type { get; set; }

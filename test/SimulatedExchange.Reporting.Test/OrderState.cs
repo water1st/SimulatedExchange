@@ -4,8 +4,6 @@
     {
         //订单编号
         public string Id { get; set; }
-        //客户端Id
-        public string ClientId { get; set; }
         //币对
         public string PairSymbols { get; set; }
         //委托价格 

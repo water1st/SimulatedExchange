@@ -1,21 +1,26 @@
-﻿using SimulatedExchange.Commands.Factory;
+﻿using MediatR;
 using System.Threading.Tasks;
 
 namespace SimulatedExchange.Commands.Bus
 {
     internal class MemoryCommandBus : ICommandBus
     {
-        private readonly ICommandHandlerFactory factory;
+        private readonly IMediator mediator;
 
-        public MemoryCommandBus(ICommandHandlerFactory factory)
+        public MemoryCommandBus(IMediator mediator)
         {
-            this.factory = factory;
+            this.mediator = mediator;
         }
 
         public async Task SendAsync<TCommand>(TCommand command) where TCommand : ICommand
         {
-            var handler = factory.GetHandler<TCommand>();
-            await handler.ExecuteAsync(command);
+            await mediator.Send(command);
+        }
+
+        public async Task<TResult> SendAsync<TResult>(ICommand<TResult> command)
+        {
+            var result = await mediator.Send(command);
+            return result;
         }
     }
 }

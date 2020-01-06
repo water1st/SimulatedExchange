@@ -7,8 +7,6 @@ namespace SimulatedExchange.DataAccess.ReportingTransaction.Orders
         public class PersistentObject
         {
             public string Id { get; set; }
-            //客户端Id
-            public string ClientId { get; set; }
             //币对
             public string FromCurrencySymbol { get; set; }
             //币对

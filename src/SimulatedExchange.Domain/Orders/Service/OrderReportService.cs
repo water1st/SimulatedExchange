@@ -85,7 +85,6 @@ namespace SimulatedExchange.Domain.Orders
             result.TotalAmount = order.TotalAmount;
             result.Type = (int)order.Type;
             result.Volume = (int)order.Volume;
-            result.ClientId = order.ClientId;
 
             return result;
         }

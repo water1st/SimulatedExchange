@@ -35,15 +35,17 @@ namespace SimulatedExchange.Applications.Services
             await commandBus.SendAsync(command);
         }
 
-        public async Task CreateNewOrder(OrderInfo orderInfo)
+        public async Task<string> CreateNewOrder(OrderInfo orderInfo)
         {
             validator.VerifyOrderInfo(orderInfo);
 
-            var command = new AddOrderCommand(orderInfo.ClientId,
+            var command = new AddOrderCommand(
                 orderInfo.PairSymbols, orderInfo.Price,
                 orderInfo.Amount, orderInfo.Exchange, orderInfo.Type);
 
-            await commandBus.SendAsync(command);
+            var id = await commandBus.SendAsync(command);
+            var result = id.ToString();
+            return result;
         }
 
         public async Task<OrderDetial> GetIdAsync(string id)

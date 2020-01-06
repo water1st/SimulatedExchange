@@ -2,16 +2,15 @@
 
 namespace SimulatedExchange.Commands
 {
-    public class AddOrderCommand : ICommand
+    public class AddOrderCommand : ICommand<Guid>
     {
-        public AddOrderCommand(string clientId, string symbols, decimal price, decimal amount, int exchange, int type)
+        public AddOrderCommand(string symbols, decimal price, decimal amount, int exchange, int type)
         {
             Symbols = symbols ?? throw new ArgumentNullException(nameof(symbols));
             Price = price;
             Amount = amount;
             Exchange = exchange;
             Type = type;
-            ClientId = clientId;
         }
 
         //币对
@@ -24,7 +23,5 @@ namespace SimulatedExchange.Commands
         public int Exchange { get; }
         // 订单类型
         public int Type { get; }
-        //客户端id
-        public string ClientId { get; }
     }
 }

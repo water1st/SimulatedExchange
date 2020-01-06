@@ -3,10 +3,6 @@
     public class NewOrderRequest
     {
         /// <summary>
-        /// 客户端OrderId
-        /// </summary>
-        public string ClientId { get; set; }
-        /// <summary>
         /// 币对：usdt-btc
         /// </summary>
         public string PairSymbols { get; set; }

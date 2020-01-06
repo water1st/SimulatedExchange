@@ -12,8 +12,6 @@ namespace SimulatedExchange.Domain.Orders
         IAggregateRootEventHandler<FullTransactionEvent>
 
     {
-        //客户端id
-        public string ClientId { get; private set; }
         //币对
         public PairSymbols PairSymbols { get; private set; }
         //委托价格 
@@ -37,7 +35,6 @@ namespace SimulatedExchange.Domain.Orders
             }
             var @event = new NewOrderEvent
             {
-                ClientId = orderInfo.ClientId,
                 Id = Guid.NewGuid(),
                 Symbols = orderInfo.Symbols,
                 Price = orderInfo.Price,
@@ -132,8 +129,7 @@ namespace SimulatedExchange.Domain.Orders
                 Price = Price,
                 Status = Status,
                 Type = Type,
-                Version = Version,
-                ClientId = ClientId
+                Version = Version
             };
         }
 
@@ -149,7 +145,6 @@ namespace SimulatedExchange.Domain.Orders
             Status = orderMemento.Status;
             Type = orderMemento.Type;
             Version = orderMemento.Version;
-            ClientId = orderMemento.ClientId;
         }
 
         public void Handle(NewOrderEvent @event)
@@ -161,7 +156,6 @@ namespace SimulatedExchange.Domain.Orders
             PairSymbols = @event.Symbols;
             Type = @event.Type;
             Status = OrderStatus.Opened;
-            ClientId = @event.ClientId;
             Id = @event.Id;
         }
 

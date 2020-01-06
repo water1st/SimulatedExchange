@@ -11,7 +11,6 @@ namespace SimulatedExchange.DataAccess.Mapper
             var symbol = transaction.Symbols.Split('-');
             var result = new OrderReporting.PersistentObject
             {
-                ClientId = transaction.ClientId,
                 CreatedTimeUtc = DateTime.UtcNow,
                 Exchange = transaction.Exchange,
                 FromCurrencySymbol = symbol[1],
@@ -31,7 +30,6 @@ namespace SimulatedExchange.DataAccess.Mapper
         {
             var result = new GetOrdersTransactionResult.GetOrdersTransactionResultItem();
 
-            result.ClientId = persistentObject.ClientId;
             result.Exchange = persistentObject.Exchange;
             result.Id = persistentObject.Id;
             result.PairSymbols = $"{persistentObject.ToCurrencySymbol}-{persistentObject.FromCurrencySymbol}";
@@ -48,7 +46,6 @@ namespace SimulatedExchange.DataAccess.Mapper
         {
             var result = new GetOrderTransactionResult();
 
-            result.ClientId = persistentObject.ClientId;
             result.Exchange = persistentObject.Exchange;
             result.Id = persistentObject.Id;
             result.PairSymbols = $"{persistentObject.ToCurrencySymbol}-{persistentObject.FromCurrencySymbol}";

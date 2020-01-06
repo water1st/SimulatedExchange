@@ -6,7 +6,7 @@ namespace SimulatedExchange.Domain.Orders.Service
     public interface IOrderService
     {
         //下单
-        Task PlaceOrderAsync(OrderInfo orderInfo);
+        Task<Guid> PlaceOrderAsync(OrderInfo orderInfo);
         //取消订单
         Task CancelOrderAsync(Guid id);
         //成交

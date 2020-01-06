@@ -36,15 +36,16 @@ namespace SimulatedExchange.Api.Controllers
         /// </summary>
         [HttpPost]
         [Route("")]
-        public async Task NewOrder([FromBody]NewOrderRequest request)
+        public async Task<string> NewOrder([FromBody]NewOrderRequest request)
         {
-            await orderService.CreateNewOrder(new OrderInfo
+            var result = await orderService.CreateNewOrder(new OrderInfo
             {
                 Amount = request.Amount,
                 PairSymbols = request.PairSymbols,
-                Price = request.Price,
-                ClientId = request.ClientId
+                Price = request.Price
             });
+
+            return result;
         }
         /// <summary>
         /// 撤单

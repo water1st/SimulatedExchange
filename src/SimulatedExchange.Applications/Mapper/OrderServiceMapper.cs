@@ -46,8 +46,7 @@ namespace SimulatedExchange.Applications.Mapper
                 Price = listItem.Price,
                 Status = listItem.Status,
                 Type = listItem.Type,
-                Volume = listItem.Volume,
-                ClientId = listItem.ClientId
+                Volume = listItem.Volume
             };
 
             return result;

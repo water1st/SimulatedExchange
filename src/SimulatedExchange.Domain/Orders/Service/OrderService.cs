@@ -25,13 +25,14 @@ namespace SimulatedExchange.Domain.Orders.Service
             order.MarkEventCommited();
         }
 
-        public async Task PlaceOrderAsync(OrderInfo orderInfo)
+        public async Task<Guid> PlaceOrderAsync(OrderInfo orderInfo)
         {
             var order = new Order();
             order.PlaceOrder(orderInfo);
             await repository.SaveAsync(order);
             await eventBus.PublishAsync(order.UncommittedEvent);
             order.MarkEventCommited();
+            return order.Id;
         }
 
         public async Task TransactionAsync(Guid Id, TransactionInfo info)

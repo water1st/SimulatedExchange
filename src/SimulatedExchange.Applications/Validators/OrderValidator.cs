@@ -21,10 +21,6 @@ namespace SimulatedExchange.Applications.Validators
             {
                 throw new ArgumentNullException(nameof(orderInfo));
             }
-            if (string.IsNullOrWhiteSpace(orderInfo.ClientId) || string.IsNullOrEmpty(orderInfo.ClientId))
-            {
-                throw new ArgumentNullException(nameof(orderInfo.ClientId));
-            }
             if (orderInfo.Type < 0)
             {
                 throw new InvalidEnumArgumentException("无效订单类型");
