@@ -52,11 +52,19 @@ namespace SimulatedExchange.Reporting.Test
 
         protected override void OnClosed(EventArgs e)
         {
-            connection.StopAsync().ContinueWith(task =>
+            if (connection != null)
+            {
+                connection.StopAsync().ContinueWith(task =>
+                {
+                    base.OnClosed(e);
+                    return Task.CompletedTask;
+                });
+            }
+            else
             {
                 base.OnClosed(e);
-                return Task.CompletedTask;
-            });
+            }
+
         }
 
         private void WriteToConsole(OrderState state) => PrintMessage(JsonSerializer.Serialize(state));
