@@ -8,12 +8,7 @@ namespace SimulatedExchange.Api.Serializer
     {
         public override decimal Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            decimal result = 0;
-
-            var value = reader.GetString();
-            decimal.TryParse(value, out result);
-
-            return result;
+            return reader.GetDecimal();
         }
 
         public override void Write(Utf8JsonWriter writer, decimal value, JsonSerializerOptions options)
