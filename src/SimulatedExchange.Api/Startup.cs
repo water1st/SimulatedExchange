@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using SimulatedExchange.Api.Filters;
 using SimulatedExchange.Api.Hubs;
+using SimulatedExchange.Api.Serializer;
 using SimulatedExchange.Applications;
 using SimulatedExchange.ClientAdapter;
 using SimulatedExchange.Commands;
@@ -35,9 +36,12 @@ namespace SimulatedExchange.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(options =>
-
             {
                 options.Filters.Add<ExceptionFilter>();
+            })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(DecimalConverter.CreateInstance());
             });
 
             services.AddSignalR();
