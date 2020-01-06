@@ -38,10 +38,6 @@ namespace SimulatedExchange.Api
             services.AddControllers(options =>
             {
                 options.Filters.Add<ExceptionFilter>();
-            })
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(DecimalConverter.CreateInstance());
             });
 
             services.AddSignalR();

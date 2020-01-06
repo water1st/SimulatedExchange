@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 06/01/2020 14:42:59
+ Date: 06/01/2020 16:02:33
 */
 
 SET NAMES utf8mb4;
@@ -25,9 +25,9 @@ CREATE TABLE `orders`  (
   `Id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `FromCurrencySymbol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `ToCurrencySymbol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `Price` decimal(10, 0) NULL DEFAULT NULL,
-  `Volume` decimal(10, 0) NULL DEFAULT NULL,
-  `TotalAmount` decimal(10, 0) NULL DEFAULT NULL,
+  `Price` decimal(65, 30) NULL DEFAULT NULL,
+  `Volume` decimal(65, 30) NULL DEFAULT NULL,
+  `TotalAmount` decimal(65, 30) NULL DEFAULT NULL,
   `Exchange` int(11) NULL DEFAULT NULL,
   `Type` int(11) NULL DEFAULT NULL,
   `Status` int(11) NULL DEFAULT NULL,
