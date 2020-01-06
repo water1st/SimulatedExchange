@@ -1,5 +1,6 @@
 ﻿using SimulatedExchange.Domain.Exceptions;
 using SimulatedExchange.Events;
+using SimulatedExchange.Exceptions;
 using System;
 
 namespace SimulatedExchange.Domain.Orders
@@ -83,6 +84,14 @@ namespace SimulatedExchange.Domain.Orders
             if (Status == OrderStatus.FullTransaction)
             {
                 throw new OrderHasBeenDealException("订单已完全成交");
+            }
+            if (info.Amount <= 0)
+            {
+                throw new InvalidValueException("数量：Amount不大于0");
+            }
+            if (info.Price <= 0)
+            {
+                throw new InvalidValueException("价格：Price不大于0");
             }
 
             var volume = Volume + info.Amount;
