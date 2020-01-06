@@ -56,7 +56,10 @@ namespace SimulatedExchange.Reporting.Test
             {
                 connection.StopAsync().ContinueWith(task =>
                 {
-                    base.OnClosed(e);
+                    Dispatcher.Invoke(() =>
+                    {
+                        base.OnClosed(e);
+                    });
                     return Task.CompletedTask;
                 });
             }
